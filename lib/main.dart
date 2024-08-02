@@ -1,3 +1,4 @@
+import 'package:clean_seas_flutter/screens/onboardings/onboarding01.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,12 +10,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      theme: ThemeData.light(useMaterial3: true),
+      debugShowCheckedModeBanner: false,
+      home: Onboarding01(),
     );
   }
 }
