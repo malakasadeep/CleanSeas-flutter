@@ -1,4 +1,4 @@
-import 'package:clean_seas_flutter/screens/onboardings/onboarding01.dart';
+import 'package:clean_seas_flutter/screens/onboard_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.light(useMaterial3: true),
       debugShowCheckedModeBanner: false,
-      home: Onboarding01(),
+      home: IntroScreen(),
     );
   }
 }
