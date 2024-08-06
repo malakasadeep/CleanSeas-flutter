@@ -1,4 +1,5 @@
 import 'package:clean_seas_flutter/constants/colours.dart';
+import 'package:clean_seas_flutter/screens/authentication/reg_screen.dart';
 import 'package:flutter/material.dart';
 
 class loginScreen extends StatelessWidget {
@@ -132,7 +133,7 @@ class loginScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Align(
+                        Align(
                           alignment: Alignment.bottomRight,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -144,12 +145,24 @@ class loginScreen extends StatelessWidget {
                                   color: Colors.grey,
                                 ),
                               ),
-                              Text(
-                                "Sign up",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return RegScreen(); // Add const here if loginScreen has a const constructor
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Sign up",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ],

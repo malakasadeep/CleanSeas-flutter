@@ -25,6 +25,7 @@ class IntroWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ColoredBox(
       color: backgroundBlue,
+      //gradient: gradientbg,
       child: Stack(
         children: [
           Container(
