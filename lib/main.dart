@@ -1,3 +1,4 @@
+import 'package:clean_seas_flutter/screens/authentication/login_screen.dart';
 import 'package:clean_seas_flutter/screens/onboard_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +12,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.light(useMaterial3: true),
+      theme: ThemeData(fontFamily: 'jua'),
       debugShowCheckedModeBanner: false,
-      home: IntroScreen(),
+      home: loginScreen(),
     );
   }
 }
