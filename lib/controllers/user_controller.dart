@@ -112,4 +112,21 @@ class UserController {
       ),
     );
   }
+
+  Future<void> logoutUser(BuildContext context) async {
+    try {
+      await _auth.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => loginScreen(),
+          // Navigate to login screen
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Logout failed: $e')),
+      );
+    }
+  }
 }

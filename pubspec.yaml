@@ -28,3 +28,7 @@ flutter:
     - family: jua
       fonts:
         - asset: assets/fonts/Jua-Regular.ttf
+
+    - family: poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf

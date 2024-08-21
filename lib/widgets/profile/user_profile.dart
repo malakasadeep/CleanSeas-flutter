@@ -1,10 +1,12 @@
 import 'package:clean_seas_flutter/constants/colours.dart';
+import 'package:clean_seas_flutter/controllers/user_controller.dart';
 import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class UserProfile extends StatelessWidget {
   final UserModel loggedInUser;
-  const UserProfile({super.key, required this.loggedInUser});
+  final UserController _userController = UserController();
+  UserProfile({super.key, required this.loggedInUser});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class UserProfile extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           SizedBox(
-            height: 160,
+            height: 140,
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
@@ -89,7 +91,7 @@ class UserProfile extends StatelessWidget {
                               'assets/images/add.png',
                               width: 50,
                             ),
-                            const SizedBox(height: 25),
+                            const SizedBox(height: 10),
                             Text(
                               "Report Marine Pollution",
                               textAlign: TextAlign.center,
@@ -113,7 +115,7 @@ class UserProfile extends StatelessWidget {
                         child: Column(
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               child: Image.network(
                                 card.image,
                                 width: double.infinity,
@@ -123,6 +125,7 @@ class UserProfile extends StatelessWidget {
                             Text(
                               card.title,
                               textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             const Spacer(),
                           ],
@@ -138,7 +141,7 @@ class UserProfile extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           ...List.generate(
             customListTiles.length,
             (index) {
@@ -149,10 +152,14 @@ class UserProfile extends StatelessWidget {
                   elevation: 4,
                   shadowColor: Colors.black12,
                   child: ListTile(
-                    leading: Icon(tile.icon),
-                    title: Text(tile.title),
-                    trailing: const Icon(Icons.chevron_right),
-                  ),
+                      leading: Icon(tile.icon),
+                      title: Text(tile.title),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        if (tile.title == "Logout") {
+                          _userController.logoutUser(context);
+                        }
+                      }),
                 ),
               );
             },
