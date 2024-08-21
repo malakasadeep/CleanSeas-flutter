@@ -5,6 +5,8 @@ import 'package:clean_seas_flutter/screens/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class NgoRegForm extends StatefulWidget {
+  const NgoRegForm({super.key});
+
   @override
   _NgoRegFormState createState() => _NgoRegFormState();
 }
