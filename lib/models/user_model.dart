@@ -27,4 +27,16 @@ class UserModel {
       'createdAt': FieldValue.serverTimestamp(),
     };
   }
+
+  // Create a UserModel object from a Map object
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      fullName: map['fullName'] ?? '',
+      ngoName: map['ngoName'] ?? '',
+      registrationNo: map['registrationNo'] ?? '',
+      email: map['email'] ?? '',
+      password: '', // Password is usually not stored or retrieved in this way
+      userType: map['userType'] ?? '',
+    );
+  }
 }
