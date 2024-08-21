@@ -62,7 +62,6 @@ class UserController {
           UserModel loggedInUser =
               UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
 
-          // Save user details in the session using SharedPreferences (optional)
           // Navigate based on user type
           if (loggedInUser.userType == 'volunteer') {
             Navigator.pushReplacement(
@@ -80,20 +79,37 @@ class UserController {
               ),
             );
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Unknown user type.')),
-            );
+            _showErrorDialog(context, 'Unknown user type.');
           }
+        } else {
+          _showErrorDialog(context, 'User data not found.');
         }
       }
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: ${e.message}')),
-      );
+      // Handle specific Firebase authentication errors
+      _showErrorDialog(context, 'Login failed: ${e.message}');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred: $e')),
-      );
+      // Handle general errors
+      _showErrorDialog(context, 'An error occurred: $e');
     }
+  }
+
+  // Method to show error alert dialog
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Login Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 }

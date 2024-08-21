@@ -1,3 +1,4 @@
+import 'package:clean_seas_flutter/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:clean_seas_flutter/models/user_model.dart';
 
@@ -10,7 +11,21 @@ class UserMainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('WelcomeUser, ${loggedInUser.fullName}'),
+        title: InkWell(
+          child: Text('WelcomeUser, ${loggedInUser.fullName}'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ProfileScreen(
+                    loggedInUser: loggedInUser,
+                  ); // Add const here if loginScreen has a const constructor
+                },
+              ),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
