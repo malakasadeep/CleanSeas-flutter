@@ -7,6 +7,9 @@ environment:
   sdk: ">=3.4.3 <4.0.0"
 
 dependencies:
+  cloud_firestore: ^5.2.1
+  firebase_auth: ^5.1.4
+  firebase_core: ^3.3.0
   flutter:
     sdk: flutter
   google_fonts: ^6.2.1
@@ -26,7 +29,14 @@ flutter:
     - family: jua
       fonts:
         - asset: assets/fonts/Jua-Regular.ttf
+
     - family: Raleway 
       fonts:   
         - asset: assets/fonts/Raleway-Regular.ttf
           
+
+
+    - family: poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+

@@ -37,7 +37,7 @@ class _IntroScreenState extends State<IntroScreen> {
       'title': 'Clean Beaches Easily & efficiently',
       'image': 'assets/images/onboardimg1.png',
       'description':
-          "A variety of foods made by the best chef. Ingredients are easy to find, all delicious flavors can only be found at cookbunda",
+          "A variety of foods made by the best chef. Ingredients are easy to find, all flavors can only be found at cookbunda",
       'skip': true
     },
     {
