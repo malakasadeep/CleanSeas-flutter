@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({
@@ -14,6 +15,7 @@ class HomeSearchBar extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
       ),
+      margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 5,

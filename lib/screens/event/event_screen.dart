@@ -1,5 +1,13 @@
-import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:clean_seas_flutter/models/event.dart';
+import 'package:clean_seas_flutter/widgets/event_appbart.dart';
+import 'package:clean_seas_flutter/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:clean_seas_flutter/constants/colours.dart';
+import 'package:clean_seas_flutter/widgets/near_event_card.dart';
+import 'package:clean_seas_flutter/widgets/featured_event_card.dart';
+import 'package:clean_seas_flutter/screens/event/one_event_screen.dart';
+import 'package:clean_seas_flutter/screens/main_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EventScreen extends StatefulWidget {
   const EventScreen({super.key});
@@ -9,59 +17,118 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
+  void _onNearEventCardTapped() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OneEventScreen(), // Navigate to OneEventScreen
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        shape: CircleBorder(),
-        backgroundColor: Color.fromARGB(255, 45, 44, 44),
-        child: const Icon(
-          Icons.add,
-          color: Color.fromARGB(255, 177, 177, 177),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        height: 70,
-        color: const Color.fromARGB(255, 45, 44, 44),
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 5,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Iconsax.home,
-                color: Color.fromARGB(255, 177, 177, 177),
+      backgroundColor: backgroundBlue,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const EventAppBar(),
+              const SizedBox(height: 10),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const HomeSearchBar(),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Near From You',
+                            style: GoogleFonts.raleway(
+                              color: const Color.fromARGB(255, 6, 6, 6),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'View All',
+                              style: GoogleFonts.raleway(
+                                color: Color.fromARGB(255, 83, 110, 173),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      SizedBox(
+                        height: 250,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: events.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: NearEventCard(
+                                  event: events[index],
+                                  wid: 200,
+                                  hig: 250,
+                                  fsize: 1,
+                                  onTap: () => _onNearEventCardTapped()),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Featured Events',
+                            style: GoogleFonts.raleway(
+                              color: const Color.fromARGB(255, 6, 6, 6),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'View All',
+                              style: GoogleFonts.raleway(
+                                color: Color.fromARGB(255, 83, 110, 173),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Column(
+                        children: List.generate(
+                          events.length,
+                          (index) => Padding(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: FeaturedEvent(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(
-                Iconsax.search_normal,
-                color: Color.fromARGB(255, 177, 177, 177),
-              ),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.print,
-                color: Color.fromARGB(255, 177, 177, 177),
-              ),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(
-                Iconsax.profile_tick,
-                color: Color.fromARGB(255, 177, 177, 177),
-              ),
-              onPressed: () {},
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

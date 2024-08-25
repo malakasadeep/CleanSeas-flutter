@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_fonts: ^6.2.1
   iconsax_flutter: ^1.0.0
 
 dev_dependencies:
@@ -25,3 +26,7 @@ flutter:
     - family: jua
       fonts:
         - asset: assets/fonts/Jua-Regular.ttf
+    - family: Raleway 
+      fonts:   
+        - asset: assets/fonts/Raleway-Regular.ttf
+          
