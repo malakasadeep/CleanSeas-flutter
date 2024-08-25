@@ -1,9 +1,3 @@
-
-import 'package:clean_seas_flutter/screens/authentication/login_screen.dart';
-import 'package:clean_seas_flutter/screens/authentication/reg_screen.dart';
-import 'package:clean_seas_flutter/screens/event/one_event_screen.dart';
-import 'package:clean_seas_flutter/screens/main_screen.dart';
-
 import 'package:clean_seas_flutter/screens/onboard_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +16,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'poppins'),
       debugShowCheckedModeBanner: false,
-      home: MainScreen(),
+      home: IntroScreen(),
     );
   }
 }

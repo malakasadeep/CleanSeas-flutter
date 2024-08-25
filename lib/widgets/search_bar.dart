@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({

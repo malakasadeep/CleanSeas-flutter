@@ -1,28 +1,33 @@
+import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/screens/event/create_event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/one_event_screen.dart';
+import 'package:flutter/widgets.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:clean_seas_flutter/constants/colours.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class MainScreenUser extends StatefulWidget {
+  final UserModel loggedInUser;
+  const MainScreenUser({super.key, required this.loggedInUser});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<MainScreenUser> createState() => _MainScreenUserState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenUserState extends State<MainScreenUser> {
   int currentTab = 0;
-  List screens = const [
-    EventScreen(),
-    OneEventScreen(),
-    Scaffold(),
-    Scaffold(),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    // Initialize the screens list inside the build method
+    List<Widget> screens = [
+      EventScreen(loggedInUser: widget.loggedInUser),
+      OneEventScreen(),
+      Scaffold(),
+      Scaffold(),
+    ];
+
     return Scaffold(
       backgroundColor: backgroundBlue,
       extendBody: true,
@@ -31,8 +36,8 @@ class _MainScreenState extends State<MainScreen> {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => CreateEventScreen()));
         },
-        shape: CircleBorder(),
-        backgroundColor: Color.fromARGB(255, 45, 44, 44),
+        shape: const CircleBorder(),
+        backgroundColor: const Color.fromARGB(255, 45, 44, 44),
         child: const Icon(
           Icons.add,
           color: Color.fromARGB(255, 177, 177, 177),
@@ -62,10 +67,6 @@ class _MainScreenState extends State<MainScreen> {
                     currentTab = 0;
                   }),
                 ),
-                // Text(
-                //   'Home',
-                //   style: TextStyle(color: Color.fromARGB(255, 177, 177, 177)),
-                // ),
               ],
             ),
             Column(
@@ -81,10 +82,6 @@ class _MainScreenState extends State<MainScreen> {
                     currentTab = 1;
                   }),
                 ),
-                // Text(
-                //   'Search',
-                //   style: TextStyle(color: Color.fromARGB(255, 177, 177, 177)),
-                // ),
               ],
             ),
             const SizedBox(width: 40), // Space for the FloatingActionButton
@@ -101,10 +98,6 @@ class _MainScreenState extends State<MainScreen> {
                     currentTab = 2;
                   }),
                 ),
-                // Text(
-                //   'Print',
-                //   style: TextStyle(color: Color.fromARGB(255, 177, 177, 177)),
-                // ),
               ],
             ),
             Column(
@@ -120,10 +113,6 @@ class _MainScreenState extends State<MainScreen> {
                     currentTab = 3;
                   }),
                 ),
-                // Text(
-                //   'Profile',
-                //   style: TextStyle(color: Color.fromARGB(255, 177, 177, 177)),
-                // ),
               ],
             ),
           ],

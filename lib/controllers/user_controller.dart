@@ -1,6 +1,6 @@
 import 'package:clean_seas_flutter/screens/authentication/login_screen.dart';
+import 'package:clean_seas_flutter/screens/main_screen_user.dart';
 import 'package:clean_seas_flutter/screens/ngo_main_screen.dart';
-import 'package:clean_seas_flutter/screens/user_main_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +68,7 @@ class UserController {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    UserMainScreen(loggedInUser: loggedInUser),
+                    MainScreenUser(loggedInUser: loggedInUser),
               ),
             );
           } else if (loggedInUser.userType == 'ngo') {

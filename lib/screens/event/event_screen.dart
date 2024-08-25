@@ -1,4 +1,5 @@
 import 'package:clean_seas_flutter/models/event.dart';
+import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/widgets/event_appbart.dart';
 import 'package:clean_seas_flutter/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,11 @@ import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:clean_seas_flutter/widgets/near_event_card.dart';
 import 'package:clean_seas_flutter/widgets/featured_event_card.dart';
 import 'package:clean_seas_flutter/screens/event/one_event_screen.dart';
-import 'package:clean_seas_flutter/screens/main_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EventScreen extends StatefulWidget {
-  const EventScreen({super.key});
+  final UserModel loggedInUser;
+  const EventScreen({super.key, required this.loggedInUser});
 
   @override
   State<EventScreen> createState() => _EventScreenState();
@@ -36,7 +37,7 @@ class _EventScreenState extends State<EventScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const EventAppBar(),
+              EventAppBar(loggedInUser: widget.loggedInUser),
               const SizedBox(height: 10),
               Expanded(
                 child: SingleChildScrollView(
