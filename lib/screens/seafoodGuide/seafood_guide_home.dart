@@ -96,11 +96,13 @@ class SustainableSeafoodGuideHome extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: const [
                   SeaCreatureCard(
-                      imageUrl: 'assets/turtle.png', name: 'Hawksbill Turtle'),
+                      imageUrl: 'assets/images/turtle.png',
+                      name: 'Hawksbill Turtle'),
                   SeaCreatureCard(
-                      imageUrl: 'assets/squid.png', name: 'Hawaiin Squid'),
+                      imageUrl: 'assets/images/squid.png',
+                      name: 'Hawaiin Squid'),
                   SeaCreatureCard(
-                      imageUrl: 'assets/whale.png', name: 'Whale Shark'),
+                      imageUrl: 'assets/images/whale.png', name: 'Whale Shark'),
                   // Add more endangered species as needed
                 ],
               ),
@@ -126,15 +128,15 @@ class SustainableSeafoodGuideHome extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.category), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.delete), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.info), label: ''),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const [
+      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.category), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.delete), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.info), label: ''),
+      //   ],
+      // ),
     );
   }
 }
