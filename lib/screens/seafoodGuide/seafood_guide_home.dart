@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'explore_sea_creatures.dart';
 
 void main() {
   runApp(SustainableSeafoodGuideApp());
@@ -53,7 +54,15 @@ class SustainableSeafoodGuideHome extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      //navigation
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SeafoodGuideScreen(),
+                        ),
+                      );
+                    },
                     child: const Text('See all'),
                   ),
                 ],
@@ -201,7 +210,8 @@ class SeaCreatureCard extends StatelessWidget {
   final String imageUrl;
   final String name;
 
-  const SeaCreatureCard({super.key, required this.imageUrl, required this.name});
+  const SeaCreatureCard(
+      {super.key, required this.imageUrl, required this.name});
 
   @override
   Widget build(BuildContext context) {
