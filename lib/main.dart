@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'poppins'),
       debugShowCheckedModeBanner: false,
-      home: ReportPollutionScreen(),
+      home: IntroScreen(),
     );
   }
 }

@@ -34,8 +34,12 @@ class _MainScreenUserState extends State<MainScreenUser> {
       extendBody: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ReportPollutionScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ReportPollutionScreen(
+                        loggedInUser: widget.loggedInUser,
+                      )));
         },
         shape: const CircleBorder(),
         backgroundColor: const Color.fromARGB(255, 45, 44, 44),

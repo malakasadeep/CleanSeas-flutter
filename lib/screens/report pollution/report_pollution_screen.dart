@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/screens/report%20pollution/location_picker.dart';
 import 'package:clean_seas_flutter/screens/report%20pollution/report_summary_page.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:intl/intl.dart'; // For Date formatting
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 
 class ReportPollutionScreen extends StatefulWidget {
+  final UserModel loggedInUser;
+  const ReportPollutionScreen({super.key, required this.loggedInUser});
   @override
   _ReportPollutionScreenState createState() => _ReportPollutionScreenState();
 }
@@ -24,10 +27,22 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
   DateTime? _incidentDate;
   TimeOfDay? _incidentTime;
   String? _waterCondition;
-  String? _reporterName = "John Doe"; // This will come from Firebase user info
-  String? _contactInfo = "johndoe@example.com"; // Also from Firebase user info
+  String? _reporterName; // Will initialize in initState
+  String?
+      _contactInfo; // Will initialize in initState// Also from Firebase user info
+  bool _showReporterFields = false;
 
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Access widget.loggedInUser in initState to initialize these variables
+    _reporterName = widget
+        .loggedInUser.fullName; // Now properly referencing the user from widget
+    _contactInfo = widget.loggedInUser.email; // Same for email
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,6 +219,7 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
                       ),
 
                       SizedBox(height: 20),
+
                       // Location Picker Field
                       Row(
                         children: [
@@ -376,33 +392,53 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
                           ),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              // Show confirmation dialog
-                              showAnimatedDialog(
+                              // Show loading animation
+                              showDialog(
                                 context: context,
-                                builder: (context) => AlertDialog(
-                                  title: Text('Confirmation'),
-                                  content: Text(
-                                      'Are you sure you want to submit the report?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      child: Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        // Submit data
-                                        await _submitReport();
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Submit'),
-                                    ),
-                                  ],
-                                ),
-                                animationType: DialogTransitionType.scale,
-                                curve: Curves.easeInOut,
-                                duration: Duration(milliseconds: 300),
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
                               );
+
+                              // Simulate a network call or processing delay
+                              await Future.delayed(Duration(seconds: 2));
+
+                              Navigator.pop(
+                                  context); // Close the loading animation
+
+                              // Navigate to the ReportSummaryPage directly without confirmation
+                              final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReportSummaryPage(
+                                    location: _location ?? 'Not specified',
+                                    pollutionType:
+                                        _pollutionType ?? 'Not specified',
+                                    pollutionSeverity: _pollutionSeverity,
+                                    description:
+                                        _description ?? 'No description',
+                                    images: _images,
+                                    incidentDate:
+                                        _incidentDate ?? DateTime.now(),
+                                    incidentTime: _incidentTime,
+                                    reporterName: _reporterName ?? 'Unknown',
+                                    contactInfo: _contactInfo ?? 'Unknown',
+                                    loggedInUser: widget.loggedInUser,
+                                  ),
+                                ),
+                              );
+
+                              if (result == true) {
+                                // Handle the publish action
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          'Report published successfully')),
+                                );
+                              }
                             }
                           },
                           child: Text(
@@ -456,6 +492,7 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
           incidentTime: _incidentTime,
           reporterName: _reporterName ?? 'Unknown',
           contactInfo: _contactInfo ?? 'Unknown',
+          loggedInUser: widget.loggedInUser,
         ),
       ),
     );
