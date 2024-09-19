@@ -104,6 +104,9 @@ class SeaCreatureCard extends StatelessWidget {
     return Card(
       elevation: 3,
       margin: EdgeInsets.symmetric(vertical: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -114,7 +117,7 @@ class SeaCreatureCard extends StatelessWidget {
               width: 80,
               height: 100,
               decoration: BoxDecoration(
-                // borderRadius: BorderRadius.circular(4),
+                // borderRadius: BorderRadius.circular(5),
                 image: DecorationImage(
                   image: AssetImage(imageUrl),
                   fit: BoxFit.cover,
