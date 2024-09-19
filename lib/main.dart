@@ -1,4 +1,5 @@
 import 'package:clean_seas_flutter/screens/onboard_screen.dart';
+import 'package:clean_seas_flutter/screens/report%20pollution/report_pollution_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'poppins'),
       debugShowCheckedModeBanner: false,
-      home: IntroScreen(),
+      home: ReportPollutionScreen(),
     );
   }
 }

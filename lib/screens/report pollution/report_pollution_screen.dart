@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:clean_seas_flutter/screens/report%20pollution/location_picker.dart';
+import 'package:clean_seas_flutter/screens/report%20pollution/report_summary_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -31,10 +32,6 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final buttonStyle = ElevatedButton.styleFrom(
-      foregroundColor: Colors.black,
-      backgroundColor: Colors.white, // Text color on the button
-    );
     final inputDecoration = InputDecoration(
       filled: true,
       fillColor: Colors.white, // Background color for inputs
@@ -430,11 +427,45 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
   }
 
   Future<void> _submitReport() async {
-    // Handle the submission logic here
-    // You can use Firebase or any other service to store the report
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Report submitted successfully')),
+    // Show loading animation
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
+
+    // Simulate a network call or processing delay
+    await Future.delayed(Duration(seconds: 2));
+
+    Navigator.pop(context); // Close the loading animation
+
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ReportSummaryPage(
+          location: _location ?? 'Not specified',
+          pollutionType: _pollutionType ?? 'Not specified',
+          pollutionSeverity: _pollutionSeverity,
+          description: _description ?? 'No description',
+          images: _images,
+          incidentDate: _incidentDate ?? DateTime.now(),
+          incidentTime: _incidentTime,
+          reporterName: _reporterName ?? 'Unknown',
+          contactInfo: _contactInfo ?? 'Unknown',
+        ),
+      ),
+    );
+
+    if (result == true) {
+      // Handle the publish action
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Report published successfully')),
+      );
+    }
   }
 
   String _getSeverityLabel(double value) {

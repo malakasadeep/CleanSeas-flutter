@@ -1,50 +1,41 @@
+import 'package:flutter/material.dart';
+
 class PollutionReport {
-  final String id;
   final String location;
   final String pollutionType;
-  final String pollutionSeverity;
+  final double pollutionSeverity;
   final String description;
-  final List<String> photos;
-  final DateTime incidentDate;
-  final String waterCondition;
-  final bool wildlifeAffected;
-  final bool recurringIssue;
-  final String nearbyActivities;
   final String reporterName;
   final String contactInfo;
-  final String ngoAffiliation;
+  final DateTime incidentDate;
+  final TimeOfDay? incidentTime;
+  final List<String>? imageUrls; // New field for storing image URLs
 
   PollutionReport({
-    required this.id,
     required this.location,
     required this.pollutionType,
     required this.pollutionSeverity,
     required this.description,
-    required this.photos,
-    required this.incidentDate,
-    required this.waterCondition,
-    required this.wildlifeAffected,
-    required this.recurringIssue,
-    required this.nearbyActivities,
     required this.reporterName,
     required this.contactInfo,
-    required this.ngoAffiliation,
+    required this.incidentDate,
+    this.incidentTime,
+    this.imageUrls, // Initialize the new field in the constructor
   });
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'location': location,
-        'pollutionType': pollutionType,
-        'pollutionSeverity': pollutionSeverity,
-        'description': description,
-        'photos': photos,
-        'incidentDate': incidentDate.toIso8601String(),
-        'waterCondition': waterCondition,
-        'wildlifeAffected': wildlifeAffected,
-        'recurringIssue': recurringIssue,
-        'nearbyActivities': nearbyActivities,
-        'reporterName': reporterName,
-        'contactInfo': contactInfo,
-        'ngoAffiliation': ngoAffiliation,
-      };
+  Map<String, dynamic> toMap() {
+    return {
+      'location': location,
+      'pollutionType': pollutionType,
+      'pollutionSeverity': pollutionSeverity,
+      'description': description,
+      'reporterName': reporterName,
+      'contactInfo': contactInfo,
+      'incidentDate': incidentDate.toIso8601String(),
+      'incidentTime': incidentTime != null
+          ? '${incidentTime!.hour}:${incidentTime!.minute}'
+          : null, // Store time as a string in "HH:mm" format
+      'imageUrls': imageUrls, // Add image URLs to the map
+    };
+  }
 }
