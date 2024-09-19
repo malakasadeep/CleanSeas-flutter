@@ -2,6 +2,7 @@ import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/screens/event/create_event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/one_event_screen.dart';
+import 'package:clean_seas_flutter/screens/report%20pollution/report_pollution_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _MainScreenUserState extends State<MainScreenUser> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CreateEventScreen()));
+              MaterialPageRoute(builder: (context) => ReportPollutionScreen()));
         },
         shape: const CircleBorder(),
         backgroundColor: const Color.fromARGB(255, 45, 44, 44),
