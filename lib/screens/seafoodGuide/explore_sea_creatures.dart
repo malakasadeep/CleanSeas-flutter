@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// Import the sea_creature_details.dart page
+import 'sea_creature_details.dart';
 
 void main() {
   runApp(SustainableSeafoodApp());
@@ -45,7 +47,7 @@ class SeafoodGuideScreen extends StatelessWidget {
             // List of Sea Creatures with Vertical Scrolling
             Expanded(
               child: ListView(
-                children: const [
+                children: [
                   SeaCreatureCard(
                     imageUrl: 'assets/images/cuttlefish.png',
                     name: 'Broadclub Cuttlefish',
@@ -58,12 +60,23 @@ class SeafoodGuideScreen extends StatelessWidget {
                     description:
                         'This small fish has a long, scaleless body and a large, distinct dorsal fin.',
                   ),
+                  // Seahorse card with navigation
                   SeaCreatureCard(
                     imageUrl: 'assets/images/seahorse.png',
                     name: 'Hippocampus',
                     description:
                         'The yellow seahorse is scientifically known as Hippocampus kuda.',
+                    onTap: () {
+                      // Navigate to sea_creature_details.dart only for this card
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SeaCreatureDetailScreen(),
+                        ),
+                      );
+                    },
                   ),
+                  // Other cards without navigation or custom navigation
                   SeaCreatureCard(
                     imageUrl: 'assets/images/lobster.png',
                     name: 'Blue lobster',
@@ -76,7 +89,6 @@ class SeafoodGuideScreen extends StatelessWidget {
                     description:
                         'The Nassau grouper is one of the large number of perciform fishes in the family.',
                   ),
-                  // Add more cards here as needed
                 ],
               ),
             ),
@@ -91,12 +103,14 @@ class SeaCreatureCard extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String description;
+  final VoidCallback? onTap; // Nullable onTap for conditional navigation
 
   const SeaCreatureCard({
     super.key,
     required this.imageUrl,
     required this.name,
     required this.description,
+    this.onTap, // onTap is optional
   });
 
   @override
@@ -107,59 +121,61 @@ class SeaCreatureCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image
-            Container(
-              width: 80,
-              height: 100,
-              decoration: BoxDecoration(
-                // borderRadius: BorderRadius.circular(5),
-                image: DecorationImage(
-                  image: AssetImage(imageUrl),
-                  fit: BoxFit.cover,
+      child: InkWell(
+        onTap: onTap, // Trigger navigation if onTap is provided
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image
+              Container(
+                width: 80,
+                height: 100,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(imageUrl),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(width: 10),
-            // Text Details
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[900],
+              SizedBox(width: 10),
+              // Text Details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[900],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
+                    SizedBox(height: 5),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black54,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    'Read more',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 14,
+                    SizedBox(height: 5),
+                    Text(
+                      'Read more',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
