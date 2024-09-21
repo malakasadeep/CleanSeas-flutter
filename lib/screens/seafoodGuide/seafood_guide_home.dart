@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'explore_sea_creatures.dart';
+import 'good_for_consumption.dart';
 
 void main() {
   runApp(SustainableSeafoodGuideApp());
@@ -161,7 +162,14 @@ class SustainableSeafoodGuideHome extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConsumptionScreen(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(16.0),
                   backgroundColor: Colors.grey[300],
