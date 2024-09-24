@@ -113,6 +113,7 @@ class _AllPollutionReportsPageState extends State<AllPollutionReportsPage>
               pollutionSeverity: reportData['pollutionSeverity'],
               reporterName: reportData['reporterName'],
               incidentDate: DateTime.parse(reportData['incidentDate']),
+              city: reportData['city'],
               onTap: () {
                 Navigator.push(
                   context,

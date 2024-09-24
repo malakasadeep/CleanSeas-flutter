@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class PollutionReport {
@@ -9,6 +10,8 @@ class PollutionReport {
   final String contactInfo;
   final DateTime incidentDate;
   final TimeOfDay? incidentTime;
+  final String city;
+
   final List<String>? imageUrls; // New field for storing image URLs
 
   PollutionReport({
@@ -20,6 +23,7 @@ class PollutionReport {
     required this.contactInfo,
     required this.incidentDate,
     this.incidentTime,
+    required this.city,
     this.imageUrls, // Initialize the new field in the constructor
   });
 
@@ -35,7 +39,9 @@ class PollutionReport {
       'incidentTime': incidentTime != null
           ? '${incidentTime!.hour}:${incidentTime!.minute}'
           : null, // Store time as a string in "HH:mm" format
+      'city': city,
       'imageUrls': imageUrls, // Add image URLs to the map
+      'createdAt': FieldValue.serverTimestamp(),
     };
   }
 }

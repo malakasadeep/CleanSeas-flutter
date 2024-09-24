@@ -78,11 +78,28 @@ class _LocationPickerState extends State<LocationPicker> {
             color: Colors.black,
           ),
         ),
-        leading: IconButton(
-          icon: Icon(Iconsax.arrow_circle_left, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        leading: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+            child: IconButton(
+              icon: Icon(Iconsax.arrow_circle_left, color: Colors.black),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
         ),
       ),
       body: Stack(
@@ -179,7 +196,7 @@ class _LocationPickerState extends State<LocationPicker> {
           onPressed: () {
             Navigator.pop(context, _currentPosition);
           },
-          backgroundColor: backgroundBlue,
+          backgroundColor: Colors.white,
           child: const Icon(Iconsax.location_add, color: Colors.black),
         ),
       ),
