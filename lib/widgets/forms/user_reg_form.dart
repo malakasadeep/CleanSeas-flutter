@@ -3,6 +3,8 @@ import 'package:clean_seas_flutter/controllers/user_controller.dart';
 import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/screens/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:awesome_dialog/awesome_dialog.dart'; // Import AwesomeDialog
 
 class UserRegForm extends StatefulWidget {
   const UserRegForm({super.key});
@@ -20,10 +22,12 @@ class _UserRegFormState extends State<UserRegForm> {
       TextEditingController();
   final UserController _userController = UserController();
 
-  void _registerUser() {
+  bool _isLoading = false; // Loading state
+
+  void _registerUser() async {
     if (_formKey.currentState!.validate()) {
       if (_passwordController.text != _confirmPasswordController.text) {
-        _showAlertDialog('Error', 'Passwords do not match');
+        _showErrorDialog('Error', 'Passwords do not match');
         return;
       }
 
@@ -34,29 +38,37 @@ class _UserRegFormState extends State<UserRegForm> {
         userType: 'volunteer',
       );
 
-      _userController.registerUser(user, context);
+      setState(() {
+        _isLoading = true; // Show loading spinner
+      });
+
+      try {
+        await _userController.registerUser(user, context);
+      } catch (error) {
+        _showErrorDialog('Error', 'Registration failed. Please try again.');
+      }
+
+      setState(() {
+        _isLoading = false; // Hide loading spinner
+      });
     }
   }
 
-  void _showAlertDialog(String title, String message) {
-    showDialog(
+  // Error Dialog
+  void _showErrorDialog(String title, String message) {
+    AwesomeDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+      dialogType: DialogType.error,
+      animType: AnimType.bottomSlide,
+      title: title,
+      desc: message,
+      btnCancelOnPress: () {},
+      btnOkOnPress: () {},
+      btnOkColor: Colors.red,
+    ).show();
   }
+
+  // Success Dialog
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +161,9 @@ class _UserRegFormState extends State<UserRegForm> {
           ),
           const SizedBox(height: 10),
           GestureDetector(
-            onTap: _registerUser,
+            onTap: _isLoading
+                ? null
+                : _registerUser, // Disable button when loading
             child: Container(
               height: 55,
               width: 300,
@@ -160,14 +174,20 @@ class _UserRegFormState extends State<UserRegForm> {
                   Color.fromARGB(255, 2, 4, 69),
                 ]),
               ),
-              child: const Center(
-                child: Text(
-                  'SIGN UP',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.white),
-                ),
+              child: Center(
+                child: _isLoading
+                    ? const SpinKitCircle(
+                        // Loading spinner
+                        color: Colors.white,
+                        size: 30.0,
+                      )
+                    : const Text(
+                        'SIGN UP',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
               ),
             ),
           ),

@@ -428,7 +428,7 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
                                           ],
                                         ),
                                         SizedBox(
-                                          width: 100,
+                                          width: 70,
                                         ),
                                         Icon(
                                           Iconsax.send_1,

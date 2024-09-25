@@ -93,7 +93,7 @@ class PollutionCard extends StatelessWidget {
                               fontSize: 14),
                         ),
                         SizedBox(
-                          width: 40,
+                          width: 20,
                         ),
                         Icon(
                           Iconsax.location_copy,

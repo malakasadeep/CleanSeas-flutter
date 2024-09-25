@@ -167,7 +167,7 @@ class PollutionDetailsPage extends StatelessWidget {
                 color: Colors.white,
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(20.0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,6 +186,7 @@ class PollutionDetailsPage extends StatelessWidget {
                       Text(
                         '${reportData['description']}',
                         style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 20),
                       Padding(
@@ -326,7 +327,7 @@ class PollutionDetailsPage extends StatelessWidget {
                                     ],
                                   ),
                                   SizedBox(
-                                    width: 100,
+                                    width: 70,
                                   ),
                                   Icon(
                                     Iconsax.send_1,
