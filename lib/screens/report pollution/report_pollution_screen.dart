@@ -3,11 +3,11 @@ import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/screens/report%20pollution/location_picker.dart';
 import 'package:clean_seas_flutter/screens/report%20pollution/report_summary_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart'; // For Date formatting
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 
 class ReportPollutionScreen extends StatefulWidget {
   final UserModel loggedInUser;
@@ -26,11 +26,10 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
   List<File> _images = [];
   DateTime? _incidentDate;
   TimeOfDay? _incidentTime;
-  String? _waterCondition;
+  String? _city;
   String? _reporterName; // Will initialize in initState
   String?
       _contactInfo; // Will initialize in initState// Also from Firebase user info
-  bool _showReporterFields = false;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -125,6 +124,7 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
                             setState(() => _pollutionType = val),
                         decoration: inputDecoration.copyWith(
                           labelText: 'Pollution Type',
+                          prefixIcon: Icon(Iconsax.category_2, color: darkBlue),
                         ),
                         validator: (value) => value == null
                             ? 'Please select a pollution type'
@@ -183,27 +183,15 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
                       ),
 
                       SizedBox(height: 20),
-                      // Water Condition Dropdown
-                      DropdownButtonFormField<String>(
-                        items: [
-                          'Clear',
-                          'Murky',
-                          'Oily sheen',
-                          'Debris-filled',
-                        ]
-                            .map((e) => DropdownMenuItem(
-                                child:
-                                    Text(e, style: TextStyle(color: textblack)),
-                                value: e))
-                            .toList(),
-                        onChanged: (val) =>
-                            setState(() => _waterCondition = val),
+                      // set city of beach
+                      TextFormField(
                         decoration: inputDecoration.copyWith(
-                          labelText: 'Water Condition',
+                          labelText: 'City of Beach',
+                          prefixIcon: Icon(Iconsax.location, color: darkBlue),
                         ),
-                        validator: (value) => value == null
-                            ? 'Please select water condition'
-                            : null,
+                        onChanged: (val) => _city = val,
+                        validator: (value) =>
+                            value!.isEmpty ? 'City is required' : null,
                       ),
 
                       SizedBox(height: 20),
@@ -398,7 +386,10 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
                                 barrierDismissible: false,
                                 builder: (BuildContext context) {
                                   return Center(
-                                    child: CircularProgressIndicator(),
+                                    child: SpinKitCircle(
+                                      color: darkBlue,
+                                      size: 60,
+                                    ),
                                   );
                                 },
                               );
@@ -424,6 +415,7 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
                                     incidentDate:
                                         _incidentDate ?? DateTime.now(),
                                     incidentTime: _incidentTime,
+                                    city: _city ?? "No City",
                                     reporterName: _reporterName ?? 'Unknown',
                                     contactInfo: _contactInfo ?? 'Unknown',
                                     loggedInUser: widget.loggedInUser,
@@ -460,49 +452,6 @@ class _ReportPollutionScreenState extends State<ReportPollutionScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _submitReport() async {
-    // Show loading animation
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-
-    // Simulate a network call or processing delay
-    await Future.delayed(Duration(seconds: 2));
-
-    Navigator.pop(context); // Close the loading animation
-
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ReportSummaryPage(
-          location: _location ?? 'Not specified',
-          pollutionType: _pollutionType ?? 'Not specified',
-          pollutionSeverity: _pollutionSeverity,
-          description: _description ?? 'No description',
-          images: _images,
-          incidentDate: _incidentDate ?? DateTime.now(),
-          incidentTime: _incidentTime,
-          reporterName: _reporterName ?? 'Unknown',
-          contactInfo: _contactInfo ?? 'Unknown',
-          loggedInUser: widget.loggedInUser,
-        ),
-      ),
-    );
-
-    if (result == true) {
-      // Handle the publish action
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Report published successfully')),
-      );
-    }
   }
 
   String _getSeverityLabel(double value) {

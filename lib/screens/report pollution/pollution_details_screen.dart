@@ -167,7 +167,7 @@ class PollutionDetailsPage extends StatelessWidget {
                 color: Colors.white,
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(20.0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,30 +186,65 @@ class PollutionDetailsPage extends StatelessWidget {
                       Text(
                         '${reportData['description']}',
                         style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Color(0xFF5EC4E6),
-                            width: 2,
-                          ),
-                        ),
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Incident Date: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(reportData['incidentDate']))}',
-                              style: TextStyle(fontSize: 16),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(32.0, 0, 32, 0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Color(0xFF5EC4E6),
+                              width: 2,
                             ),
-                            if (incidentTime != null)
-                              Text(
-                                'Incident Time: ${_formatIncidentTime(incidentTime)}',
-                                style: TextStyle(fontSize: 16),
+                          ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Iconsax.calendar_2_copy,
+                                      color: Color.fromARGB(255, 6, 64, 111)),
+                                  Text(
+                                    ' ${DateFormat('yyyy-MM-dd').format(DateTime.parse(reportData['incidentDate']))}',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
                               ),
-                          ],
+                              SizedBox(
+                                height: 10,
+                              ),
+                              if (incidentTime != null)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Iconsax.clock_copy,
+                                        color: Color.fromARGB(255, 6, 64, 111)),
+                                    Text(
+                                      ' ${_formatIncidentTime(incidentTime)}',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Iconsax.location_copy,
+                                      color: Color.fromARGB(255, 6, 64, 111)),
+                                  Text(
+                                    ' In ${reportData['city']}',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -221,54 +256,83 @@ class PollutionDetailsPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Container(
-                        height: 300,
-                        width: double.infinity,
-                        child: GoogleMap(
-                          initialCameraPosition: _initialCameraPosition,
-                          markers: {
-                            Marker(
-                              markerId: MarkerId('reportLocation'),
-                              position: LatLng(latitude, longitude),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                spreadRadius: 5,
+                              ),
+                            ],
+                          ),
+                          height: 250,
+                          width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: GoogleMap(
+                              initialCameraPosition: _initialCameraPosition,
+                              markers: {
+                                Marker(
+                                  markerId: MarkerId('reportLocation'),
+                                  position: LatLng(latitude, longitude),
+                                ),
+                              },
                             ),
-                          },
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
                       Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFF5EC4E6),
-                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Row(
+                          child: Column(
                             children: [
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                  "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_1280.png",
-                                ),
+                              Divider(
+                                color: backgroundBlue,
+                                thickness: 3,
                               ),
-                              SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  Text(
-                                    reportData['reporterName'],
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
+                                  CircleAvatar(
+                                    radius: 23,
+                                    backgroundImage: NetworkImage(
+                                      "https://www.shareicon.net/data/512x512/2016/05/24/770117_people_512x512.png",
                                     ),
                                   ),
-                                  Text(
-                                    reportData['contactInfo'],
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black54,
-                                    ),
+                                  SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${reportData['reporterName']}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${reportData['contactInfo']}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w200,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                  ),
+                                  Icon(
+                                    Iconsax.send_1,
+                                    color: Colors.black,
+                                    size: 28,
                                   ),
                                 ],
                               ),

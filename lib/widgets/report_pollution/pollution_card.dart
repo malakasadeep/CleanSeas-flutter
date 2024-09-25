@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
 
 class PollutionCard extends StatelessWidget {
@@ -7,6 +8,7 @@ class PollutionCard extends StatelessWidget {
   final String pollutionType;
   final double pollutionSeverity;
   final String reporterName;
+  final String city;
   final DateTime incidentDate;
   final VoidCallback onTap;
 
@@ -15,6 +17,7 @@ class PollutionCard extends StatelessWidget {
     required this.pollutionType,
     required this.pollutionSeverity,
     required this.reporterName,
+    required this.city,
     required this.incidentDate,
     required this.onTap,
   });
@@ -76,10 +79,50 @@ class PollutionCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 5),
-                    Text('Reported by: $reporterName'),
+                    Row(
+                      children: [
+                        Icon(
+                          Iconsax.calendar_2_copy,
+                          color: Color.fromARGB(255, 119, 144, 165),
+                          size: 18,
+                        ),
+                        Text(
+                          ' ${DateFormat('yyyy-MM-dd').format(incidentDate)}',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 71, 88, 101),
+                              fontSize: 14),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Icon(
+                          Iconsax.location_copy,
+                          color: Color.fromARGB(255, 119, 144, 165),
+                          size: 18,
+                        ),
+                        Text(
+                          ' $city',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 71, 88, 101),
+                              fontSize: 14),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 5),
-                    Text(
-                      'Date: ${DateFormat('yyyy-MM-dd').format(incidentDate)}',
+                    Row(
+                      children: [
+                        Icon(
+                          Iconsax.user_square,
+                          color: Color.fromARGB(255, 119, 144, 165),
+                          size: 18,
+                        ),
+                        Text(
+                          ' $reporterName',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 71, 88, 101),
+                              fontSize: 14),
+                        ),
+                      ],
                     ),
                   ],
                 ),

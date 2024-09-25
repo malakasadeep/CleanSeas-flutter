@@ -5,22 +5,24 @@ import 'package:clean_seas_flutter/models/pollution_report.dart';
 import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/screens/main_screen_user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class ReportSummaryPage extends StatefulWidget {
   final UserModel loggedInUser;
-  final String
-      location; // This will be in "LatLng(5.9736354, 80.4656271)" format
+  final String location;
   final String pollutionType;
   final double pollutionSeverity;
   final String description;
   final List<File> images;
   final DateTime incidentDate;
   final TimeOfDay? incidentTime;
+  final String city;
   final String reporterName;
   final String contactInfo;
 
@@ -33,6 +35,7 @@ class ReportSummaryPage extends StatefulWidget {
     required this.images,
     required this.incidentDate,
     this.incidentTime,
+    required this.city,
     required this.reporterName,
     required this.contactInfo,
     required this.loggedInUser,
@@ -47,11 +50,9 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
   final PollutionReportController _controller = PollutionReportController();
   bool _isLoading = false;
 
-  // Define the new colors
   Color get darkBlue => Color(0xFF0B0672);
   Color get lightBlue => Color(0xFF5EC4E6);
 
-  // Format incident time
   String _formatIncidentTime(TimeOfDay? time) {
     if (time == null) return 'Not specified';
     final now = DateTime.now();
@@ -60,49 +61,21 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
     return DateFormat.jm().format(dateTime);
   }
 
-  // Show confirmation dialog before saving the report
   Future<void> _showConfirmationDialog() async {
-    final bool? confirmed = await showDialog<bool>(
+    AwesomeDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Confirm Save',
-          style: TextStyle(color: darkBlue),
-        ),
-        content: Text(
-          'Are you sure you want to save this report?',
-          style: TextStyle(color: darkBlue),
-        ),
-        backgroundColor: Colors.white,
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true); // Confirm
-            },
-            child: Text(
-              'Yes',
-              style: TextStyle(color: darkBlue),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false); // Cancel
-            },
-            child: Text(
-              'No',
-              style: TextStyle(color: darkBlue),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true) {
-      _saveReport(); // Proceed to save the report if confirmed
-    }
+      dialogType: DialogType.question,
+      animType: AnimType.scale,
+      dialogBackgroundColor: Color.fromARGB(255, 192, 227, 255),
+      title: 'Confirm Save',
+      desc: 'Are you sure you want to save this report?',
+      btnCancelOnPress: () {},
+      btnOkOnPress: () {
+        _saveReport();
+      },
+    ).show();
   }
 
-  // Function to save the report and show success dialog
   Future<void> _saveReport() async {
     setState(() {
       _isLoading = true;
@@ -117,9 +90,9 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
       contactInfo: widget.contactInfo,
       incidentDate: widget.incidentDate,
       incidentTime: widget.incidentTime,
+      city: widget.city,
     );
 
-    // Save report to Firestore and upload images
     bool success = await _controller.saveReport(report, widget.images);
 
     setState(() {
@@ -127,49 +100,32 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
     });
 
     if (success) {
-      _showSuccessDialog(); // Show success alert and navigate to UserMainScreen
+      _showSuccessDialog();
     } else {
-      // Show failure message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to save report.')),
       );
     }
   }
 
-  // Show success alert dialog after saving report
   void _showSuccessDialog() {
-    showDialog(
+    AwesomeDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Success!',
-          style: TextStyle(color: lightBlue),
-        ),
-        content: Text(
-          'Your report has been successfully submitted.',
-          style: TextStyle(color: darkBlue),
-        ),
-        backgroundColor: Colors.white, // Background color with light blue tint
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close the dialog
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      MainScreenUser(loggedInUser: widget.loggedInUser),
-                ),
-              ); // Navigate to UserMainScreen
-            },
-            child: Text(
-              'OK',
-              style: TextStyle(color: darkBlue),
-            ),
+      dialogType: DialogType.success,
+      animType: AnimType.scale,
+      dialogBackgroundColor: Color.fromARGB(255, 192, 227, 255),
+      title: 'Success!',
+      desc: 'Your report has been successfully submitted.',
+      btnOkOnPress: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                MainScreenUser(loggedInUser: widget.loggedInUser),
           ),
-        ],
-      ),
-    );
+        );
+      },
+    ).show();
   }
 
   @override
@@ -177,7 +133,6 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
     double latitude = 0.0;
     double longitude = 0.0;
 
-    // Parse the LatLng from the string
     try {
       String cleanedLocation =
           widget.location.replaceAll(RegExp(r'LatLng\(|\)'), '');
@@ -208,7 +163,7 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
         ),
         backgroundColor: backgroundBlue,
         leading: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(5.0),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -232,7 +187,7 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(5.0),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -247,7 +202,7 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
                 ],
               ),
               child: IconButton(
-                icon: Icon(Iconsax.save_add, color: Colors.black),
+                icon: Icon(Iconsax.document_upload, color: Colors.black),
                 onPressed: _isLoading ? null : _showConfirmationDialog,
               ),
             ),
@@ -256,29 +211,31 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
       ),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(
-                color: darkBlue, // Use darkBlue for loading indicator
+              child: SpinKitCircle(
+                color: darkBlue,
+                size: 60,
               ),
             )
           : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                // Carousel Slider for Images
                 CarouselSlider(
                   carouselController: _carouselController,
                   options: CarouselOptions(
                     height: 200,
-                    aspectRatio: 16 / 9,
-                    viewportFraction: 0.8,
                     enlargeCenterPage: true,
-                    autoPlay: false,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    viewportFraction: 0.8,
                   ),
                   items: widget.images.map((image) {
-                    return Image.file(
-                      image,
-                      fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width,
+                    return ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      child: Image.file(
+                        image,
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width,
+                      ),
                     );
                   }).toList(),
                 ),
@@ -296,7 +253,7 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
                 ),
                 Expanded(
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
                         topRight: Radius.circular(40),
@@ -319,34 +276,76 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
                                     _getSeverityColor(widget.pollutionSeverity),
                               ),
                             ),
+                            // Additional UI code continues
                             SizedBox(height: 10),
                             Text(
                               ' ${widget.description}',
                               style: TextStyle(fontSize: 16),
                             ),
                             SizedBox(height: 20),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: backgroundBlue,
-                                  width: 2,
-                                ),
-                              ),
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Incident Date: ${DateFormat('yyyy-MM-dd').format(widget.incidentDate)}',
-                                    style: TextStyle(fontSize: 16),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(32, 8.0, 32, 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: backgroundBlue,
+                                    width: 2,
                                   ),
-                                  if (widget.incidentTime != null)
-                                    Text(
-                                      'Incident Time: ${_formatIncidentTime(widget.incidentTime)}',
-                                      style: TextStyle(fontSize: 16),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Iconsax.calendar_2_copy,
+                                            color: const Color.fromARGB(
+                                                255, 59, 107, 147)),
+                                        Text(
+                                          ' ${DateFormat('yyyy-MM-dd').format(widget.incidentDate)}',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ],
                                     ),
-                                ],
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    if (widget.incidentTime != null)
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Iconsax.clock_copy,
+                                              color: const Color.fromARGB(
+                                                  255, 59, 107, 147)),
+                                          Text(
+                                            ' ${_formatIncidentTime(widget.incidentTime)}',
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ],
+                                      ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Iconsax.location_copy,
+                                            color: Color.fromARGB(
+                                                255, 6, 64, 111)),
+                                        Text(
+                                          ' ${widget.city}',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(height: 20),
@@ -358,58 +357,86 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
                               ),
                             ),
                             SizedBox(height: 10),
-                            Container(
-                              height: 300,
-                              width: double.infinity,
-                              child: GoogleMap(
-                                initialCameraPosition: _initialCameraPosition,
-                                markers: {
-                                  Marker(
-                                    markerId: MarkerId('reportLocation'),
-                                    position: LatLng(latitude, longitude),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Container(
+                                height: 250,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 10,
+                                      spreadRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: GoogleMap(
+                                    initialCameraPosition:
+                                        _initialCameraPosition,
+                                    markers: {
+                                      Marker(
+                                        markerId: MarkerId('reportLocation'),
+                                        position: LatLng(latitude, longitude),
+                                      ),
+                                    },
                                   ),
-                                },
+                                ),
                               ),
                             ),
                             SizedBox(height: 20),
                             Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: backgroundBlue,
-                              ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Row(
+                                child: Column(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage: NetworkImage(
-                                        "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_1280.png",
-                                      ),
+                                    Divider(
+                                      color: backgroundBlue,
+                                      thickness: 3,
                                     ),
-                                    SizedBox(width: 10),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Row(
                                       children: [
-                                        Text(
-                                          widget.reporterName,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black,
+                                        CircleAvatar(
+                                          radius: 23,
+                                          backgroundImage: NetworkImage(
+                                            "https://www.shareicon.net/data/512x512/2016/05/24/770117_people_512x512.png",
                                           ),
                                         ),
-                                        Text(
-                                          widget.contactInfo,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black54,
-                                          ),
+                                        SizedBox(width: 10),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              widget.reporterName,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              widget.contactInfo,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w200,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 70,
+                                        ),
+                                        Icon(
+                                          Iconsax.send_1,
+                                          color: Colors.black,
+                                          size: 28,
                                         ),
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -426,24 +453,14 @@ class _ReportSummaryPageState extends State<ReportSummaryPage> {
   }
 
   String _getSeverityLabel(double value) {
-    // Return severity label based on the pollution severity value
-    if (value == 3) {
-      return 'High';
-    } else if (value == 2) {
-      return 'Moderate';
-    } else {
-      return 'Low';
-    }
+    if (value == 3) return 'High';
+    if (value == 2) return 'Moderate';
+    return 'Low';
   }
 
   Color _getSeverityColor(double value) {
-    // Return color based on pollution severity value
-    if (value == 3) {
-      return Colors.red;
-    } else if (value == 2) {
-      return Colors.orange;
-    } else {
-      return Colors.green;
-    }
+    if (value == 3) return Colors.red;
+    if (value == 2) return Colors.orange;
+    return Colors.green;
   }
 }

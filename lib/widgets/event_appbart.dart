@@ -12,30 +12,35 @@ class EventAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        InkWell(
-          child: Text(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ProfileScreen(
+                loggedInUser: loggedInUser,
+              ); // Add const here if loginScreen has a const constructor
+            },
+          ),
+        );
+      },
+      child: Row(
+        children: [
+          Text(
             'Hi ${loggedInUser.fullName}',
             style: GoogleFonts.raleway(
                 fontSize: 30, fontWeight: FontWeight.w800, height: 1),
           ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return ProfileScreen(
-                    loggedInUser: loggedInUser,
-                  ); // Add const here if loginScreen has a const constructor
-                },
-              ),
-            );
-          },
-        ),
-        const Spacer(),
-        Image(image: AssetImage('assets/images/mahiiicat.png'))
-      ],
+          const Spacer(),
+          CircleAvatar(
+            radius: 30,
+            backgroundImage: NetworkImage(
+              "https://www.shareicon.net/data/512x512/2016/05/24/770117_people_512x512.png",
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
