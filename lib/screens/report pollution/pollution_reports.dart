@@ -142,7 +142,7 @@ class _AllPollutionReportsPageState extends State<AllPollutionReportsPage>
       decoration: InputDecoration(
         hintText: 'Search by city',
         hintStyle: GoogleFonts.raleway(
-            color: Colors.black54, fontSize: 18, fontWeight: FontWeight.w400),
+            color: Colors.black54, fontSize: 18, fontWeight: FontWeight.w500),
         border: InputBorder.none,
       ),
       onChanged: (query) {

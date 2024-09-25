@@ -11,7 +11,7 @@
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
   <application
-    android:label="clean_seas_flutter"
+    android:label="CleanSeas"
     android:name="${applicationName}"
     android:icon="@mipmap/ic_launcher">
     
