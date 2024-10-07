@@ -39,7 +39,7 @@ class FeaturedEvent extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      'kukku chuttak ona',
+                      'Kamilo Beach Cleanup',
                       style: GoogleFonts.raleway(
                         color: Color.fromARGB(255, 20, 20, 20),
                         fontSize: 10,
