@@ -1,23 +1,9 @@
+import 'package:clean_seas_flutter/screens/seafoodGuide/explore_sea_creatures.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const SeaCreatureDetailApp());
-}
-
-class SeaCreatureDetailApp extends StatelessWidget {
-  const SeaCreatureDetailApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const SeaCreatureDetailScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 class SeaCreatureDetailScreen extends StatelessWidget {
-  const SeaCreatureDetailScreen({super.key});
+  final SeaCreature seaCreature;
+  const SeaCreatureDetailScreen({super.key, required this.seaCreature});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +22,7 @@ class SeaCreatureDetailScreen extends StatelessWidget {
               children: [
                 // Image
                 Image.asset(
-                  'assets/images/seahorse.png', // Replace with your image asset
+                  seaCreature.imageUrl, // Replace with your image asset
                   height: 300,
                   fit: BoxFit.cover,
                   width: double.infinity,
@@ -46,7 +32,7 @@ class SeaCreatureDetailScreen extends StatelessWidget {
                   bottom: 20,
                   left: 16,
                   child: Text(
-                    'Hippocampus', // Sea creature name
+                    seaCreature.name, // Sea creature name
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -160,8 +146,8 @@ class SeaCreatureDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Seahorses, Hippocampus, are small marine fish that are found in shallow tropical and temperate waters around the world. They are known for their horse-like head and their prehensile tail, which they use to anchor themselves to coral or seaweed. Seahorses have a unique appearance and are among the most distinctive fish in the ocean.',
+                  Text(
+                    seaCreature.longDescription,
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                 ],
