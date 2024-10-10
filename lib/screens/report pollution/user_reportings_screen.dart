@@ -47,6 +47,7 @@ class _UserReportingsPageState extends State<UserReportingsPage> {
       context,
       MaterialPageRoute(
         builder: (context) => PollutionDetailsPage(
+          loggedInUser: widget.loggedInUser,
           reportId: reportId,
           reportData: reportData,
         ),
@@ -248,6 +249,7 @@ class _UserReportingsPageState extends State<UserReportingsPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => PollutionDetailsPage(
+                        loggedInUser: widget.loggedInUser,
                         reportId: reportId,
                         reportData: reportData,
                       ),

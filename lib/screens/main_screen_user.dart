@@ -1,4 +1,5 @@
 import 'package:clean_seas_flutter/models/user_model.dart';
+import 'package:clean_seas_flutter/screens/education/education_resources_home_screen.dart';
 import 'package:clean_seas_flutter/screens/event/create_event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/one_event_screen.dart';
@@ -25,9 +26,9 @@ class _MainScreenUserState extends State<MainScreenUser> {
     // Initialize the screens list inside the build method
     List<Widget> screens = [
       EventScreen(loggedInUser: widget.loggedInUser),
-      AllPollutionReportsPage(),
+      AllPollutionReportsPage(loggedInUser: widget.loggedInUser),
       Scaffold(),
-      Scaffold(),
+      EducationResourcesHomeScreen(),
     ];
 
     return Scaffold(

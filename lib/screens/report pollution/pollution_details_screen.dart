@@ -1,19 +1,23 @@
-import 'package:clean_seas_flutter/constants/colours.dart';
+import 'package:clean_seas_flutter/screens/event/create_event_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:clean_seas_flutter/constants/colours.dart';
+import 'package:clean_seas_flutter/models/user_model.dart'; // Assuming you have a UserModel
 
 class PollutionDetailsPage extends StatelessWidget {
   final String reportId;
   final Map<String, dynamic> reportData;
+  final UserModel loggedInUser; // Add logged-in user info here
   final CarouselController _carouselController = CarouselController();
 
   PollutionDetailsPage({
     required this.reportId,
     required this.reportData,
+    required this.loggedInUser, // Pass the logged-in user info
   });
 
   String _getSeverityLabel(double severity) {
@@ -112,6 +116,7 @@ class PollutionDetailsPage extends StatelessWidget {
                 top: 30,
                 left: 10,
                 child: FloatingActionButton(
+                  heroTag: "back",
                   onPressed: () {
                     Navigator.pop(context); // Back navigation
                   },
@@ -189,6 +194,7 @@ class PollutionDetailsPage extends StatelessWidget {
                         textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 20),
+                      // Incident Date and Time
                       Padding(
                         padding: const EdgeInsets.fromLTRB(32.0, 0, 32, 0),
                         child: Container(
@@ -214,9 +220,7 @@ class PollutionDetailsPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              SizedBox(height: 10),
                               if (incidentTime != null)
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -229,9 +233,7 @@ class PollutionDetailsPage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -348,6 +350,19 @@ class PollutionDetailsPage extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: loggedInUser.userType == 'ngo'
+          ? FloatingActionButton(
+              heroTag: 'reportEvent',
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateEventScreen()));
+              },
+              backgroundColor: Colors.blue,
+              child: Icon(Iconsax.calendar_add, color: Colors.white),
+            )
+          : null, // Show FAB only for NGO users
     );
   }
 }

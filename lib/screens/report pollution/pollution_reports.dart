@@ -1,4 +1,5 @@
 import 'package:clean_seas_flutter/constants/colours.dart';
+import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/screens/report pollution/pollution_details_screen.dart';
 import 'package:clean_seas_flutter/widgets/report_pollution/pollution_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class AllPollutionReportsPage extends StatefulWidget {
+  final UserModel loggedInUser;
+  const AllPollutionReportsPage({super.key, required this.loggedInUser});
   @override
   _AllPollutionReportsPageState createState() =>
       _AllPollutionReportsPageState();
@@ -191,6 +194,7 @@ class _AllPollutionReportsPageState extends State<AllPollutionReportsPage>
                   context,
                   MaterialPageRoute(
                     builder: (context) => PollutionDetailsPage(
+                      loggedInUser: widget.loggedInUser,
                       reportId: reports[index].id,
                       reportData: reportData,
                     ),
