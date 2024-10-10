@@ -1,3 +1,5 @@
+import 'package:clean_seas_flutter/screens/seafoodGuide/endangered_species.dart';
+import 'package:clean_seas_flutter/screens/seafoodGuide/seasonal_reccomendation.dart';
 import 'package:flutter/material.dart';
 import 'explore_sea_creatures.dart';
 import 'good_for_consumption.dart';
@@ -96,7 +98,15 @@ class SustainableSeafoodGuideHome extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      //navigation
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SeafoodGuideScreens(),
+                        ),
+                      );
+                    },
                     child: const Text('See all'),
                   ),
                 ],
@@ -123,7 +133,14 @@ class SustainableSeafoodGuideHome extends StatelessWidget {
 
               // Updated Buttons for Recommendations and Sustainable Choices
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SeasonalRecommendationScreen(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(16.0),
                   backgroundColor: Colors.grey[300],
