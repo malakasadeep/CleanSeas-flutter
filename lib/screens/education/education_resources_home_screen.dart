@@ -1,6 +1,7 @@
 import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:clean_seas_flutter/models/EducationArticle.dart';
 import 'package:clean_seas_flutter/models/education_video.dart';
+import 'package:clean_seas_flutter/screens/education/view_all_articles_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -135,7 +136,14 @@ class EducationResourcesHomeScreen extends StatelessWidget {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        // Navigate to view more articles
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return ViewAllArticlesPage(); // Add const here if loginScreen has a const constructor
+                                            },
+                                          ),
+                                        );
                                       },
                                       child: Text('View More'),
                                     ),
