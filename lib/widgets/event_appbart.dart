@@ -28,7 +28,7 @@ class EventAppBar extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'Hi ${loggedInUser.fullName}',
+            'Hi ${loggedInUser.fullName.isNotEmpty ? loggedInUser.fullName : loggedInUser.ngoName}',
             style: GoogleFonts.raleway(
                 fontSize: 30, fontWeight: FontWeight.w800, height: 1),
           ),

@@ -1,8 +1,10 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:clean_seas_flutter/controllers/user_controller.dart';
 import 'package:clean_seas_flutter/models/user_model.dart';
 import 'package:clean_seas_flutter/screens/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class NgoRegForm extends StatefulWidget {
   const NgoRegForm({super.key});
@@ -20,11 +22,12 @@ class _NgoRegFormState extends State<NgoRegForm> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final UserController _userController = UserController();
+  bool _isLoading = false;
 
-  void _registerNgo() {
+  void _registerNgo() async {
     if (_formKey.currentState!.validate()) {
       if (_passwordController.text != _confirmPasswordController.text) {
-        _showAlertDialog('Error', 'Passwords do not match');
+        _showErrorDialog('Error', 'Passwords do not match');
         return;
       }
 
@@ -35,9 +38,33 @@ class _NgoRegFormState extends State<NgoRegForm> {
         password: _passwordController.text,
         userType: 'ngo',
       );
+      setState(() {
+        _isLoading = true; // Show loading spinner
+      });
 
-      _userController.registerUser(ngoUser, context);
+      try {
+        await _userController.registerUser(ngoUser, context);
+      } catch (error) {
+        _showErrorDialog('Error', 'Registration failed. Please try again.');
+      }
+
+      setState(() {
+        _isLoading = false; // Hide loading spinner
+      });
     }
+  }
+
+  void _showErrorDialog(String title, String message) {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.error,
+      animType: AnimType.bottomSlide,
+      title: title,
+      desc: message,
+      btnCancelOnPress: () {},
+      btnOkOnPress: () {},
+      btnOkColor: Colors.red,
+    ).show();
   }
 
   void _showAlertDialog(String title, String message) {
@@ -162,7 +189,7 @@ class _NgoRegFormState extends State<NgoRegForm> {
           ),
           const SizedBox(height: 5),
           GestureDetector(
-            onTap: _registerNgo,
+            onTap: _isLoading ? null : _registerNgo,
             child: Container(
               height: 55,
               width: 300,
@@ -173,14 +200,20 @@ class _NgoRegFormState extends State<NgoRegForm> {
                   Color.fromARGB(255, 2, 4, 69),
                 ]),
               ),
-              child: const Center(
-                child: Text(
-                  'SIGN UP',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.white),
-                ),
+              child: Center(
+                child: _isLoading
+                    ? const SpinKitCircle(
+                        // Loading spinner
+                        color: Colors.white,
+                        size: 30.0,
+                      )
+                    : const Text(
+                        'SIGN UP',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
               ),
             ),
           ),

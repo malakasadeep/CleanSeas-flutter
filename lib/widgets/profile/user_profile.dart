@@ -110,7 +110,9 @@ class _UserProfileState extends State<UserProfile> {
               ),
               const SizedBox(height: 5),
               Text(
-                widget.loggedInUser.fullName,
+                widget.loggedInUser.fullName.isNotEmpty
+                    ? widget.loggedInUser.fullName
+                    : widget.loggedInUser.ngoName,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
