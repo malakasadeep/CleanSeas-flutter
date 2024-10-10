@@ -1,3 +1,4 @@
+import 'package:clean_seas_flutter/screens/seafoodGuide/consumption_details.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,14 +39,16 @@ final List<SeaCreature> goodForConsumptionSeaCreatures = [
   SeaCreature(
     id: '1',
     name: 'Cuttlefish',
-    reason: 'Cuttlefish is rich in protein and omega-3 fatty acids.',
+    reason:
+        'Cuttlefish is a great option for consumption due to its high protein content, low fat, and abundance of essential nutrients like vitamins B12 and B6, phosphorus, and selenium, which contribute to overall health. Its tender, mild-flavored meat is highly versatile in cooking, making it a popular seafood choice. Importantly, cuttlefish is not currently listed as endangered, meaning it is generally considered a sustainable option for eating without harming ocean ecosystems.',
     imageUrl: 'assets/images/cuttlefish2.png',
     isTrue: true,
   ),
   SeaCreature(
     id: '2',
     name: 'Blue Crab',
-    reason: 'Blue crabs are harvested sustainably and are nutritious.',
+    reason:
+        'Blue crab is a good choice for consumption because it is rich in protein, low in calories, and a good source of vitamins like B12 and minerals such as zinc and selenium, which are important for overall health. Its sweet, tender meat is enjoyed in a variety of dishes. Blue crabs are not considered endangered, making them a sustainable option for seafood consumption, helping to maintain balance in marine ecosystems while providing a healthy and delicious food source',
     imageUrl: 'assets/images/blue_crab.png',
     isTrue: true,
   ),
@@ -53,21 +56,23 @@ final List<SeaCreature> goodForConsumptionSeaCreatures = [
     id: '3',
     name: 'Red Snapper',
     reason:
-        'Red snapper is a lean source of protein and has low mercury levels.',
+        'Red snapper is considered a good option for consumption because of its firm texture, mild flavor, and high nutritional value, including being a good source of protein, omega-3 fatty acids, and essential vitamins like B12 and D. It is prized for its versatility in cooking, whether grilled, baked, or pan-fried. Red snapper populations are generally managed through regulations, and while not endangered, it is essential to choose sustainably caught varieties to ensure the health of the species and marine ecosystems.',
     imageUrl: 'assets/images/red_snapper.png',
     isTrue: true,
   ),
   SeaCreature(
     id: '4',
     name: 'Oyster',
-    reason: 'Oysters are eco-friendly and contain essential nutrients.',
+    reason:
+        'Oysters are a sustainable choice for consumption as they are not endangered and are farmed in environmentally friendly ways. They are packed with nutrients like zinc, iron, and omega-3 fatty acids, which are beneficial for heart and brain health. Oysters also help filter and clean the water in their habitat, making them beneficial to marine ecosystems. Choosing responsibly farmed or wild-caught oysters supports both personal health and the health of the oceans.',
     imageUrl: 'assets/images/oyster.png',
     isTrue: true,
   ),
   SeaCreature(
     id: '5',
     name: 'Prawns',
-    reason: 'Prawns are low in fat and an excellent source of protein.',
+    reason:
+        'Prawns are considered a good choice for consumption when sourced from sustainable and responsible fisheries or farms. They are rich in protein, vitamins, and minerals like selenium, which supports immune function. Wild-caught prawns from well-managed fisheries are typically a more sustainable option. It’s important to choose prawns that are certified by reputable sustainability programs, as overfishing and harmful farming practices can damage marine ecosystems. When sourced responsibly, prawns can be a healthy and eco-friendly addition to the diet.',
     imageUrl: 'assets/images/prawns.png',
     isTrue: true,
   ),
@@ -110,8 +115,7 @@ final List<SeaCreature> notGoodForConsumptionSeaCreatures = [
   SeaCreature(
     id: '5',
     name: 'Monkfish',
-    reason:
-        'The Monkfish (Lophius piscatorius), also known as the Anglerfish, is considered vulnerable due to overfishing and habitat degradation. Highly prized for its firm and tasty meat, Monkfish has been targeted by commercial fisheries, particularly in Europe and North America, leading to significant population declines. The species slow growth and late maturity make it susceptible to over-exploitation, as it takes time for populations to recover. In addition, bottom trawling, a fishing method commonly used to catch Monkfish, destroys the seafloor habitat where they live, further impacting their environment. Conservation measures, including catch limits and habitat protections, have been implemented in some areas to help safeguard Monkfish populations, but enforcement and effective management remain critical to their recovery.',
+    reason: 'The Monkfish (Lophius piscatorius), ',
     imageUrl: 'assets/images/monkfish.png',
     isTrue: false,
   ),
@@ -194,18 +198,33 @@ class _SeafoodGuideScreenState extends State<ConsumptionScreen>
 }
 
 // good for consumption screen
-class GoodForConsumptionScreen extends StatelessWidget {
+class GoodForConsumptionScreen extends StatefulWidget {
   const GoodForConsumptionScreen({super.key});
 
+  @override
+  State<GoodForConsumptionScreen> createState() =>
+      _GoodForConsumptionScreenState();
+}
+
+class _GoodForConsumptionScreenState extends State<GoodForConsumptionScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: goodForConsumptionSeaCreatures.map((creature) {
-        return SeaCreatureCard(
+        return SeaCreatureCard2(
           imageUrl: creature.imageUrl,
           name: creature.name,
-          
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ConsumptionDetails(
+                  creature: creature,
+                ),
+              ),
+            );
+          },
         );
       }).toList(),
     );
@@ -213,17 +232,34 @@ class GoodForConsumptionScreen extends StatelessWidget {
 }
 
 // not good for consumption screen
-class NotGoodForConsumptionScreen extends StatelessWidget {
+class NotGoodForConsumptionScreen extends StatefulWidget {
   const NotGoodForConsumptionScreen({super.key});
 
+  @override
+  State<NotGoodForConsumptionScreen> createState() =>
+      _NotGoodForConsumptionScreenState();
+}
+
+class _NotGoodForConsumptionScreenState
+    extends State<NotGoodForConsumptionScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: notGoodForConsumptionSeaCreatures.map((creature) {
-        return SeaCreatureCard(
+        return SeaCreatureCard2(
           imageUrl: creature.imageUrl,
           name: creature.name,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ConsumptionDetailsCard(
+                  creature: creature,
+                ),
+              ),
+            );
+          },
         );
       }).toList(),
     );
@@ -231,47 +267,57 @@ class NotGoodForConsumptionScreen extends StatelessWidget {
 }
 
 // SeaCreatureCard widget to display a sea creature
-class SeaCreatureCard extends StatelessWidget {
+class SeaCreatureCard2 extends StatefulWidget {
   final String imageUrl;
   final String name;
+  final VoidCallback onTap;
 
-  const SeaCreatureCard({
+  const SeaCreatureCard2({
     super.key,
     required this.imageUrl,
     required this.name,
+    required this.onTap,
   });
 
+  @override
+  State<SeaCreatureCard2> createState() => _SeaCreatureCardState();
+}
+
+class _SeaCreatureCardState extends State<SeaCreatureCard2> {
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Stack(
-          alignment: Alignment.bottomLeft,
-          children: [
-            Image.asset(
-              imageUrl,
-              height: 150, // Increased card height
-              width: double.infinity,
-              fit: BoxFit.cover, // Image covers the entire card
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              color: Colors.black54,
-              width: double.infinity,
-              child: Text(
-                name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+      child: InkWell(
+        onTap: widget.onTap,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6),
+          ),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: Stack(
+            alignment: Alignment.bottomLeft,
+            children: [
+              Image.asset(
+                widget.imageUrl,
+                height: 150, // Increased card height
+                width: double.infinity,
+                fit: BoxFit.cover, // Image covers the entire card
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.black54,
+                width: double.infinity,
+                child: Text(
+                  widget.name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
