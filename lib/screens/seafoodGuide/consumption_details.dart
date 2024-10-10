@@ -1,11 +1,16 @@
+import 'package:clean_seas_flutter/screens/seafoodGuide/good_for_consumption.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(ConsumptionDetails());
-}
+// void main() {
+//   runApp(ConsumptionDetails());
+// }
 
 class ConsumptionDetails extends StatelessWidget {
-  const ConsumptionDetails({super.key});
+  final SeaCreature creature;
+  const ConsumptionDetails({
+    super.key,
+    required this.creature, // Pass the SeaCreature object to the constructor
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class ConsumptionDetails extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 // Scrollable container
-                child: ConsumptionDetailsCard(),
+                child: ConsumptionDetailsCard(creature: creature),
               ),
             ),
           ),
@@ -30,7 +35,8 @@ class ConsumptionDetails extends StatelessWidget {
 }
 
 class ConsumptionDetailsCard extends StatelessWidget {
-  const ConsumptionDetailsCard({super.key});
+  final SeaCreature creature;
+  const ConsumptionDetailsCard({super.key, required this.creature});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +52,7 @@ class ConsumptionDetailsCard extends StatelessWidget {
           elevation: 5.0,
           child: Container(
             width: 320,
+            // height: 800,
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +65,7 @@ class ConsumptionDetailsCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(7.0),
                   child: Image.asset(
-                    'assets/images/blue_crab.png',
+                    creature.imageUrl,
                     height: 180,
                     width: 230,
                     fit: BoxFit.cover,
@@ -68,7 +75,7 @@ class ConsumptionDetailsCard extends StatelessWidget {
 
                 // Title
                 Text(
-                  'Blue crab',
+                  creature.name,
                   style: TextStyle(
                     fontSize: 28.0,
                     fontWeight: FontWeight.bold,
@@ -93,7 +100,7 @@ class ConsumptionDetailsCard extends StatelessWidget {
 
                 // Description Text
                 Text(
-                  'Blue crab is a healthy and nutritious seafood choice, rich in high-quality protein and essential omega-3 fatty acids that support heart and brain health. It\'s low in fat and calories, making it a lean option, while also providing key vitamins and minerals like vitamin B12, zinc, and selenium. Additionally, blue crabs are often harvested sustainably, making them an environmentally responsible choice. Their mild, sweet flavor adds versatility to many dishes, from salads to crab cakes, making them both delicious and good for overall well-being.',
+                  creature.reason,
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black87,
@@ -115,7 +122,9 @@ class ConsumptionDetailsCard extends StatelessWidget {
             ),
             padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 18.0),
             child: Text(
-              'Good for Consumption',
+              creature.isTrue
+                  ? 'Good for Consumption'
+                  : 'Not Good for Consumption',
               style: TextStyle(
                 color: Colors.blue[900],
                 fontWeight: FontWeight.bold,
