@@ -33,6 +33,7 @@ dependencies:
   location: ^6.0.2
   lottie: ^3.1.2
   share_plus: ^10.0.3
+  shared_preferences: ^2.3.2
   video_player: ^2.9.2
 
 dev_dependencies:

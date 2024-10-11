@@ -45,8 +45,8 @@ List<EducationArticle> sampleArticles = [
     longDescription:
         'Sustainable fishing aims to maintain fish populations and avoid overfishing... [additional content]',
     articleImages: [
-      'https://example.com/article_image1.jpg',
-      'https://example.com/article_image2.jpg',
+      'https://cdn.shopify.com/s/files/1/0271/4642/0298/files/7835619.jpg?v=1679316969',
+      'https://www.getculturedkitchen.com/wp-content/uploads/2017/06/Longline.jpg',
     ],
     viewCount: 1024,
     likeCount: 250,
@@ -69,8 +69,8 @@ List<EducationArticle> sampleArticles = [
     longDescription:
         'Millions of tons of plastic waste end up in our oceans, causing... [additional content]',
     articleImages: [
-      'https://example.com/article_image3.jpg',
-      'https://example.com/article_image4.jpg',
+      'https://live.staticflickr.com/65535/51649665394_b15c643f17_b.jpg',
+      'https://images.squarespace-cdn.com/content/v1/5eda91260bbb7e7a4bf528d8/1625681653482-8SCINQYWKQRME6WY6JQF/Screenshot+2021-07-07+at+14-13-45+Macleod_et_al+2021+pdf.png',
     ],
     viewCount: 1520,
     likeCount: 340,
@@ -87,15 +87,15 @@ List<EducationArticle> sampleArticles = [
     imageUrls: [
       'https://www.theborneopost.com/newsimages/2015/04/C_PC0004961.jpg',
       'https://swimwithdolphinsandmantas.com/wp-content/uploads/2017/09/1491581693744-1024x768.jpeg',
-      'https://pebbleandfins.com/wp-content/uploads/2024/04/underwater-landscape-3-1024x574.webp',
+      'https://strstudentnews.org/wp-content/uploads/2023/12/canva-MAEFhGZUGQk.jpg',
     ],
     shortDescription:
         'Discover the importance of coral reefs to marine biodiversity.',
     longDescription:
         'Coral reefs are vital to the health of the ocean, supporting... [additional content]',
     articleImages: [
-      'https://example.com/coral_article1.jpg',
-      'https://example.com/coral_article2.jpg',
+      'https://images.encounteredu.com/excited-hare/production/uploads/activity-edible-polyp-figure-5.jpg?w=800&q=80&auto=format&fit=clip&dm=1631569804&s=ef8b74acaa047212371500af5d90871a',
+      'https://cdn.coastalscience.noaa.gov/cdhc/2021/08/Coral-Polyp-Anatomy-Diagram.png',
     ],
     viewCount: 850,
     likeCount: 180,
@@ -118,8 +118,8 @@ List<EducationArticle> sampleArticles = [
     longDescription:
         'Threaded sea creatures play a crucial role in maintaining... [additional content]',
     articleImages: [
-      'https://example.com/threaded_article1.jpg',
-      'https://example.com/threaded_article2.jpg',
+      'https://onlinelibrary.wiley.com/cms/asset/1583686a-dad0-4bd6-a7ef-e945a6af5c2c/cbdv201900638-toc-0001-m.jpg',
+      'https://i.pinimg.com/736x/d9/ca/35/d9ca35d0a1cd89b108e3f0b54d1cbb6f.jpg',
     ],
     viewCount: 620,
     likeCount: 140,
