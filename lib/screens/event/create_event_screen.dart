@@ -331,7 +331,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 }
 
-// Location Picker Screen (Simplified)
+// Screen to pick a location using Google Maps
 class LocationPickerScreen extends StatefulWidget {
   const LocationPickerScreen({Key? key}) : super(key: key);
 
@@ -340,36 +340,57 @@ class LocationPickerScreen extends StatefulWidget {
 }
 
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
-  LatLng _pickedLocation = const LatLng(37.7749, -122.4194); // Default location
-  Location _location = Location();
+  GoogleMapController? _controller;
+  LatLng _pickedLocation = const LatLng(37.7749, -122.4194); // Default to SF
+  Location location = Location();
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+  }
+
+  Future<void> _getUserLocation() async {
+    LocationData userLocation = await location.getLocation();
+    setState(() {
+      _pickedLocation = LatLng(userLocation.latitude ?? 37.7749,
+          userLocation.longitude ?? -122.4194);
+    });
+  }
+
+  void _selectLocation(LatLng latLng) {
+    setState(() {
+      _pickedLocation = latLng;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pick Location')),
+      appBar: AppBar(
+        title: const Text('Pick Event Location'),
+      ),
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
           target: _pickedLocation,
-          zoom: 15,
+          zoom: 14.0,
         ),
-        onTap: (LatLng latLng) {
-          setState(() {
-            _pickedLocation = latLng;
-          });
+        onMapCreated: (GoogleMapController controller) {
+          _controller = controller;
         },
-        myLocationEnabled: true,
-        onMapCreated: (GoogleMapController controller) async {
-          LocationData currentLocation = await _location.getLocation();
-          controller.moveCamera(CameraUpdate.newLatLng(
-            LatLng(currentLocation.latitude!, currentLocation.longitude!),
-          ));
+        onTap: _selectLocation,
+        markers: {
+          Marker(
+            markerId: const MarkerId('pickedLocation'),
+            position: _pickedLocation,
+          ),
         },
       ),
       floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.check),
         onPressed: () {
           Navigator.pop(context, _pickedLocation);
         },
-        child: const Icon(Icons.check),
       ),
     );
   }
