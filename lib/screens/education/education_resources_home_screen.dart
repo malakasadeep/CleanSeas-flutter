@@ -1,7 +1,10 @@
 import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:clean_seas_flutter/models/EducationArticle.dart';
 import 'package:clean_seas_flutter/models/education_video.dart';
+import 'package:clean_seas_flutter/screens/education/education_video_page.dart';
+import 'package:clean_seas_flutter/screens/education/view_all_articles_page.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lottie/lottie.dart'; // For sea creature animations
@@ -16,7 +19,7 @@ class EducationResourcesHomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             Text(
               'Education Resources',
               style: GoogleFonts.raleway(
@@ -135,7 +138,14 @@ class EducationResourcesHomeScreen extends StatelessWidget {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        // Navigate to view more articles
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return ViewAllArticlesPage(); // Add const here if loginScreen has a const constructor
+                                            },
+                                          ),
+                                        );
                                       },
                                       child: Text('View More'),
                                     ),
@@ -175,6 +185,14 @@ class EducationResourcesHomeScreen extends StatelessWidget {
                                     ),
                                     TextButton(
                                       onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return EducationVideoPage(); // Add const here if loginScreen has a const constructor
+                                            },
+                                          ),
+                                        );
                                         // Navigate to view more videos
                                       },
                                       child: Text('View More'),
@@ -312,7 +330,7 @@ class EducationResourcesHomeScreen extends StatelessWidget {
                   Positioned(
                     top: 35,
                     left: 55,
-                    child: Icon(Iconsax.play,
+                    child: Icon(FontAwesomeIcons.playCircle,
                         size: 40, color: Colors.white), // Play button icon
                   ),
                 ],
