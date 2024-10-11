@@ -286,9 +286,9 @@ class _VideoCardState extends State<VideoCard> {
                   FontAwesomeIcons.thumbsUp,
                   '${widget.video.likeCount}',
                   () {
-                    setState(() {
-                      widget.video.likeCount++;
-                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Liked')),
+                    );
                   },
                 ),
                 _buildIconButton(
