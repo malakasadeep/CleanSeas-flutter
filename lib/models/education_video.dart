@@ -52,8 +52,7 @@ List<EducationVideo> sampleVideos = [
   EducationVideo(
     id: 'v002',
     title: 'How to Combat Plastic Pollution',
-    thumbnailUrl:
-        'https://imageio.forbes.com/specials-images/imageserve/6669d614535331aa01194100/Tropical-fish-and-turtle/960x0.jpg?height=472&width=711&fit=bounds',
+    thumbnailUrl: 'https://i.ytimg.com/vi/7iwnC5x7-aA/hqdefault.jpg',
     videoUrl:
         'https://firebasestorage.googleapis.com/v0/b/cleanseas-flutter.appspot.com/o/education%2Fvideos%2FWhat%20Would%20Happen%20If%20All%20The%20Coral%20Reefs%20Died%20Off_2.mp4?alt=media&token=0630c532-32bb-48b7-98e0-0f4d81e9b179',
     description:
@@ -67,5 +66,23 @@ List<EducationVideo> sampleVideos = [
     authorAvatarUrl:
         'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
     uploadDate: DateTime(2023, 10, 2),
+  ),
+  EducationVideo(
+    id: 'v003',
+    title: 'Understanding Marine Ecosystems',
+    thumbnailUrl: 'https://i.ytimg.com/vi/2dX4IUv-4Ko/hqdefault.jpg',
+    videoUrl:
+        'https://firebasestorage.googleapis.com/v0/b/cleanseas-flutter.appspot.com/o/education%2Fvideos%2FWhat%20Would%20Happen%20If%20All%20The%20Coral%20Reefs%20Died%20Off_2.mp4?alt=media&token=0630c532-32bb-48b7-98e0-0f4d81e9b179',
+    description:
+        'Dive deep into the world of marine ecosystems and discover how different species interact and thrive in the ocean.',
+    viewCount: 4100,
+    likeCount: 780,
+    isTrending: true,
+    isLatest: false,
+    isMostViewed: true,
+    author: 'Marine Ecologist',
+    authorAvatarUrl:
+        'https://www.padi.com/sites/default/files/styles/card_cover/public/images/2022-02/AlannahVellacottHeadshot%202.jpg?h=b0068e95&itok=kp3aDpJ-',
+    uploadDate: DateTime(2023, 9, 10),
   ),
 ];

@@ -4,22 +4,6 @@ import 'package:flutter/material.dart';
 import 'explore_sea_creatures.dart';
 import 'good_for_consumption.dart';
 
-void main() {
-  runApp(SustainableSeafoodGuideApp());
-}
-
-class SustainableSeafoodGuideApp extends StatelessWidget {
-  const SustainableSeafoodGuideApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SustainableSeafoodGuideHome(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 class SustainableSeafoodGuideHome extends StatelessWidget {
   const SustainableSeafoodGuideHome({super.key});
 
