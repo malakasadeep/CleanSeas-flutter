@@ -172,7 +172,7 @@ class SeaCreatureGrid extends StatelessWidget {
       image: "assets/images/blue_crab.png",
       availability: "indigo",
       seasonMonths: [9, 10, 11], //  September to November
-      activeHours: [20, 21, 22], // 6 AM to 11 AM
+      activeHours: [13,14,15,16,17], // 1 PM to 5 PM
     ),
     SeaCreature(
       name: "Red Snapper",
@@ -196,7 +196,7 @@ class SeaCreatureGrid extends StatelessWidget {
       image: "assets/images/jack_mackerel.png",
       availability: "lightBlue",
       seasonMonths: [9, 10, 11], // September to November
-      activeHours: [17, 18, 19, 20], // 6 PM to 9 PM
+      activeHours: [13,14,15,16,17], // 5 PM to 8 PM
     ),
     SeaCreature(
       name: "Lobster",
@@ -204,7 +204,7 @@ class SeaCreatureGrid extends StatelessWidget {
       image: "assets/images/lobster2.png",
       availability: "blue",
       seasonMonths: [9, 10, 11], // September to November
-      activeHours: [17, 18, 19, 20], // 6 PM to 9 PM
+      activeHours: [13,14,15,16,17], // 5 PM to 8 PM
     ),
     SeaCreature(
       name: "Trout",
@@ -212,7 +212,7 @@ class SeaCreatureGrid extends StatelessWidget {
       image: "assets/images/trout.png",
       availability: "blue",
       seasonMonths: [9, 10, 11], // September to November
-      activeHours: [17, 18, 19, 20], // 6 PM to 9 PM
+      activeHours: [13,14,15,16,17], // 5 PM to 8 PM
     ),
   ];
 
