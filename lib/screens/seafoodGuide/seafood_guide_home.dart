@@ -79,8 +79,8 @@ class SustainableSeafoodGuideHome extends StatelessWidget {
                         imageUrl: 'assets/images/starfish.png',
                         name: 'Star Fish'),
                     SeaCreatureCard(
-                        imageUrl: 'assets/images/urchin.png',
-                        name: 'The Sea Urchin'),
+                        imageUrl: 'assets/images/manta_ray.png',
+                        name: 'Manta Ray'),
                     SeaCreatureCard(
                         imageUrl: 'assets/images/octopus.png',
                         name: 'Blue Ring Octopus'),
@@ -246,8 +246,18 @@ class SeaCreatureCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: Image.asset(imageUrl, fit: BoxFit.cover),
+          // Set a fixed size for the image container
+          Container(
+            width: 100, // Set a fixed width
+            height: 125, // Set a fixed height
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(imageUrl),
+                fit: BoxFit.cover, // Ensures the image covers the container
+              ),
+              borderRadius:
+                  BorderRadius.circular(4), // Optional: Add rounded corners
+            ),
           ),
           const SizedBox(height: 5),
           Text(name, style: const TextStyle(fontSize: 14)),
