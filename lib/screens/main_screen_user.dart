@@ -5,6 +5,7 @@ import 'package:clean_seas_flutter/screens/event/event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/one_event_screen.dart';
 import 'package:clean_seas_flutter/screens/report%20pollution/pollution_reports.dart';
 import 'package:clean_seas_flutter/screens/report%20pollution/report_pollution_screen.dart';
+import 'package:clean_seas_flutter/screens/seafoodGuide/seafood_guide_home.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _MainScreenUserState extends State<MainScreenUser> {
     List<Widget> screens = [
       EventScreen(loggedInUser: widget.loggedInUser),
       AllPollutionReportsPage(loggedInUser: widget.loggedInUser),
-      Scaffold(),
+      SustainableSeafoodGuideHome(),
       EducationResourcesHomeScreen(),
     ];
 

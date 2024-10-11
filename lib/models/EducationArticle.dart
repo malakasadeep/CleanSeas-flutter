@@ -11,6 +11,7 @@ class EducationArticle {
   final bool isLatest;
   final bool isMostViewed;
   final String author;
+  final String authorAvatar; // New attribute for author avatar
   final DateTime publishDate;
 
   EducationArticle({
@@ -26,12 +27,12 @@ class EducationArticle {
     required this.isLatest,
     required this.isMostViewed,
     required this.author,
+    required this.authorAvatar, // Set this in constructor
     required this.publishDate,
   });
 }
 
 List<EducationArticle> sampleArticles = [
-  // Existing articles
   EducationArticle(
     id: '001',
     title: 'Sustainable Fishing Practices',
@@ -41,9 +42,9 @@ List<EducationArticle> sampleArticles = [
       'https://farandawayadventures.com/wp-content/uploads/2024/09/e5f21569thumbnail.jpeg',
     ],
     shortDescription:
-        'Learn how sustainable fishing can help preserve ocean life.',
+        'Learn how sustainable fishing can help preserve ocean life by managing fish populations effectively while avoiding overfishing and damage to marine ecosystems.',
     longDescription:
-        'Sustainable fishing aims to maintain fish populations and avoid overfishing... [additional content]',
+        'Learn how sustainable fishing can help preserve ocean life by managing fish populations effectively while avoiding overfishing and damage to marine ecosystems. Sustainable fishing aims to maintain fish populations over time, ensuring that we can continue to fish responsibly while minimizing harm to aquatic ecosystems. Techniques like selective fishing gear and controlled quotas are being implemented to balance human demand with marine conservation efforts. Discover key methods used today and the challenges still faced in this field.',
     articleImages: [
       'https://cdn.shopify.com/s/files/1/0271/4642/0298/files/7835619.jpg?v=1679316969',
       'https://www.getculturedkitchen.com/wp-content/uploads/2017/06/Longline.jpg',
@@ -54,6 +55,8 @@ List<EducationArticle> sampleArticles = [
     isLatest: false,
     isMostViewed: false,
     author: 'Marine Expert',
+    authorAvatar:
+        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
     publishDate: DateTime(2023, 10, 5),
   ),
   EducationArticle(
@@ -65,11 +68,11 @@ List<EducationArticle> sampleArticles = [
       'https://www.kent.co.in/blog/wp-content/uploads/2018/06/Blog-image-1.jpg',
     ],
     shortDescription:
-        'Plastic pollution is one of the largest threats to marine ecosystems.',
+        'Explore how plastic pollution has become one of the most dangerous threats to marine life, affecting species large and small across our oceans.',
     longDescription:
-        'Millions of tons of plastic waste end up in our oceans, causing... [additional content]',
+        'Explore how plastic pollution has become one of the most dangerous threats to marine life, affecting species large and small across our oceans.Plastic waste, from tiny microplastics to large debris, is a growing concern in marine ecosystems. Every year, millions of tons of plastic waste enter our oceans, harming marine life through entanglement, ingestion, and habitat destruction. Learn more about the sources of plastic pollution and the global efforts to mitigate its impact on marine species and environments.',
     articleImages: [
-      'https://live.staticflickr.com/65535/51649665394_b15c643f17_b.jpg',
+      'https://rethinksustainability.ca/wp-content/uploads/2019/08/article_ocean.jpg',
       'https://images.squarespace-cdn.com/content/v1/5eda91260bbb7e7a4bf528d8/1625681653482-8SCINQYWKQRME6WY6JQF/Screenshot+2021-07-07+at+14-13-45+Macleod_et_al+2021+pdf.png',
     ],
     viewCount: 1520,
@@ -78,9 +81,10 @@ List<EducationArticle> sampleArticles = [
     isLatest: true,
     isMostViewed: true,
     author: 'Oceanic Conservationist',
+    authorAvatar:
+        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
     publishDate: DateTime(2023, 9, 25),
   ),
-  // New articles
   EducationArticle(
     id: '003',
     title: 'Coral Reefs: The Underwater Rainforests',
@@ -90,9 +94,9 @@ List<EducationArticle> sampleArticles = [
       'https://strstudentnews.org/wp-content/uploads/2023/12/canva-MAEFhGZUGQk.jpg',
     ],
     shortDescription:
-        'Discover the importance of coral reefs to marine biodiversity.',
+        'Dive into the world of coral reefs, often referred to as the rainforests of the sea, and their critical role in supporting marine biodiversity.',
     longDescription:
-        'Coral reefs are vital to the health of the ocean, supporting... [additional content]',
+        'Dive into the world of coral reefs, often referred to as the rainforests of the sea, and their critical role in supporting marine biodiversity.Coral reefs provide a habitat for a diverse range of marine species, offering food, shelter, and breeding grounds for countless organisms. Despite their importance, these ecosystems are under threat from climate change, pollution, and destructive fishing practices. This article explores the unique structure of coral reefs, their ecological significance, and the urgent need for their protection.',
     articleImages: [
       'https://images.encounteredu.com/excited-hare/production/uploads/activity-edible-polyp-figure-5.jpg?w=800&q=80&auto=format&fit=clip&dm=1631569804&s=ef8b74acaa047212371500af5d90871a',
       'https://cdn.coastalscience.noaa.gov/cdhc/2021/08/Coral-Polyp-Anatomy-Diagram.png',
@@ -103,22 +107,24 @@ List<EducationArticle> sampleArticles = [
     isLatest: false,
     isMostViewed: false,
     author: 'Coral Reef Specialist',
+    authorAvatar:
+        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
     publishDate: DateTime(2023, 10, 10),
   ),
   EducationArticle(
     id: '004',
     title: 'Threaded Sea Creatures: Nature’s Engineers',
     imageUrls: [
-      'https://www.nwf.org/-/media/NEW-WEBSITE/Shared-Folder/Magazines/2018/Dec-Jan/Vertical-Migration-DJ2018-3-900x591.jpg',
+      'https://images.playground.com/92d6495b038c46c1a28701bb3762037c.jpeg',
       'https://i.ytimg.com/vi/5NnOR3OyBbs/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCkVLgx-bJsH1YRVBOhgrxXSYmOSg',
       'https://petapixel.com/assets/uploads/2020/01/ocean_feat.jpg',
     ],
     shortDescription:
-        'Learn about the fascinating adaptations of threaded sea creatures.',
+        'Uncover the engineering marvels of sea creatures that use threads to build structures, capture prey, and defend themselves in underwater habitats.',
     longDescription:
-        'Threaded sea creatures play a crucial role in maintaining... [additional content]',
+        'Uncover the engineering marvels of sea creatures that use threads to build structures, capture prey, and defend themselves in underwater habitats.Threaded sea creatures such as mollusks, certain worms, and even some fish species have developed fascinating biological adaptations that allow them to spin threads or fibers to trap food, build habitats, or evade predators. This article highlights these unique species and the ecological significance of their behaviors in maintaining marine biodiversity.',
     articleImages: [
-      'https://onlinelibrary.wiley.com/cms/asset/1583686a-dad0-4bd6-a7ef-e945a6af5c2c/cbdv201900638-toc-0001-m.jpg',
+      'https://rethinksustainability.ca/wp-content/uploads/2019/08/article_ocean.jpg',
       'https://i.pinimg.com/736x/d9/ca/35/d9ca35d0a1cd89b108e3f0b54d1cbb6f.jpg',
     ],
     viewCount: 620,
@@ -127,6 +133,8 @@ List<EducationArticle> sampleArticles = [
     isLatest: true,
     isMostViewed: false,
     author: 'Marine Biologist',
+    authorAvatar:
+        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
     publishDate: DateTime(2023, 10, 1),
   ),
   EducationArticle(
@@ -139,17 +147,19 @@ List<EducationArticle> sampleArticles = [
     ],
     shortDescription: 'කොරල් පර මත පදනම් වූ ජීවීන්ගේ ගුණාංග ඉගෙන ගන්න.',
     longDescription:
-        'කොරල් පර සමඟ සම්බන්ධිත ජීවීන්ගේ පරිසරය සහ වැදගත්කම... [additional content]',
+        'කොරල් පර මත පදනම් වූ ජීවීන්ගේ පරිසරය, කටයුතු සහ ඉතිහාසය ඉගෙන ගන්න. මෙවැනි ජීවීන් සාමාන්‍යයෙන් ජල පරිසරවල ජීවත් වන අතර ඔවුන්ගේ විවිධ ගුණාංගය පරිසර සම්පතක ලෙස වැදගත්කමක් ඇති අතර, පරිසරය තුළ ඇති විවිධත්වය රඳා පවතී.කොරල් පර යනු නොගැඹුරු නිවර්ථන පෝෂක පදාර්ථ ඉතා සුළු ප්‍රමාණයක් හෝ පෝෂ ද්‍රව්‍ය‍ නොමැති සමුද්‍ර ජලයෙහි අන්තර්ගත ජීවි විශේෂ වලින් නිෂ්පාදනය කරනු ලබන ඇරගනයිට් ව්‍යුහයන් වේ. කාෂිකාර්මික ප්‍රදේශ වලින් නිකුත් කරනු ලබන අධි පෝෂණය සහිත සංඝටක නිසා ඇල්ගි වල වර්ධනය දිරිමත් කිරීම මගින් මෙකී කොරල් පර වලට හානි සිදුවිය හැකිය. බොහෝ කොරල් පර වල ප්‍රමුඛතම ජීවි විශේෂයන් වනුයේ පාෂාණමය කොරල්ය. මේවා කැල්සියම් කාබනේට් බහිස්සැකිලි ස්‍රාවය කරන ගනාවාසයේ නිඩේරියාවන්ගෙන් සැදී ඇත. මෙලෙස සැකිලි ද්‍රව්‍ය එක්රැස්වීමෙන් සහ කැඩිබිදි ඒවා සාගර තරංග මගින් එකිනෙක මත ගොඩ ගැසි ජෛව විඛාදනයට පත් වීමෙන් සුවිශාල කැල්සියම් වලින් සැදුම්ලත් ගනාවාස බිහිවන අතර ඒවා මගින් අනෙකුත් ජීවි කොරල් වලට සහ විශේෂ මාදලි වල වෙනත් ශාක හා සත්ව ජීවිත වලට ආධාර සපයනු ලැබේ. මේකි කොරල් නිවර්තන සහ සෞම්‍ය ජලයෙහි දක්නට ලැබුණද කොරල් පර සෑදෙනුයේ සමකයෙහි සිට අක්ෂාංශ 30 කත් සහ දේෂාංශ 30 ක් අතර කලාපයේදීය. කොරල් ඉතා කුඩා ජීවියෙකුගේ නිර්මාණයකි.මේ කුඩා ජීවියා "පොලිප් ජීවියා" හෙවත් බුහුබාවා ලෙස හදුන්වයි.',
     articleImages: [
-      'https://example.com/coral_sinhala_article1.jpg',
-      'https://example.com/coral_sinhala_article2.jpg',
+      'https://images.encounteredu.com/excited-hare/production/uploads/activity-edible-polyp-figure-5.jpg?w=800&q=80&auto=format&fit=clip&dm=1631569804&s=ef8b74acaa047212371500af5d90871a',
+      'https://cdn.coastalscience.noaa.gov/cdhc/2021/08/Coral-Polyp-Anatomy-Diagram.png',
     ],
     viewCount: 430,
     likeCount: 95,
     isTrending: true,
     isLatest: true,
     isMostViewed: false,
-    author: 'ජල විද්‍යාඥයා',
+    author: 'මහින්ද රාජපක්ෂ',
+    authorAvatar:
+        'https://pbs.twimg.com/profile_images/541867053351583744/rcxem8NU_400x400.jpeg',
     publishDate: DateTime(2023, 10, 7),
   ),
 ];

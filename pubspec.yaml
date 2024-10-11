@@ -19,6 +19,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_local_notifications: ^17.2.3
+  flutter_reaction_button: ^2.0.1
   flutter_slidable: ^3.1.1
   flutter_spinkit: ^5.2.1
   font_awesome_flutter: ^10.7.0
@@ -32,6 +33,7 @@ dependencies:
   intl: ^0.19.0
   location: ^6.0.2
   lottie: ^3.1.2
+  photo_view: ^0.15.0
   share_plus: ^10.0.3
   shared_preferences: ^2.3.2
   video_player: ^2.9.2

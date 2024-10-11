@@ -4,7 +4,6 @@ import 'package:clean_seas_flutter/screens/education/article_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:share_plus/share_plus.dart'; // For sharing functionality
 import 'package:clean_seas_flutter/models/EducationArticle.dart'; // Import your model
 
 class ArticleCard extends StatelessWidget {
@@ -17,11 +16,6 @@ class ArticleCard extends StatelessWidget {
     final currentDate = DateTime.now();
     final difference = currentDate.difference(publishDate).inDays;
     return difference == 0 ? 'Today' : '$difference days ago';
-  }
-
-  // Function to share article content
-  void _shareArticle(BuildContext context) {
-    Share.share('${article.title} - ${article.shortDescription}');
   }
 
   @override
@@ -126,34 +120,6 @@ class ArticleCard extends StatelessWidget {
               ),
             ),
             // Action Buttons
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton.icon(
-                    icon: Icon(Icons.favorite_border, size: 18),
-                    label: Text('Wishlist'),
-                    onPressed: () {
-                      // Add to wishlist functionality
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.red,
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    icon: Icon(Icons.share, size: 18),
-                    label: Text('Share'),
-                    onPressed: () => _shareArticle(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.blue,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
