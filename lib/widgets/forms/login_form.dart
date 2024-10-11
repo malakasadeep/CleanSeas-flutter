@@ -2,6 +2,7 @@ import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:clean_seas_flutter/controllers/user_controller.dart';
 import 'package:clean_seas_flutter/screens/authentication/reg_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart'; // Import the flutter_spinkit package
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -14,9 +15,14 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false; // Add a state variable for loading
 
   void _loginUser() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true; // Start loading
+      });
+
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
 
@@ -28,6 +34,10 @@ class _LoginFormState extends State<LoginForm> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Login failed: $e')),
         );
+      } finally {
+        setState(() {
+          _isLoading = false; // Stop loading
+        });
       }
     }
   }
@@ -135,8 +145,9 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   const SizedBox(height: 30),
                   GestureDetector(
-                    onTap:
-                        _loginUser, // Call the login function on button press
+                    onTap: _isLoading
+                        ? null
+                        : _loginUser, // Call the login function if not loading
                     child: Container(
                       height: 55,
                       width: double.infinity,
@@ -149,15 +160,20 @@ class _LoginFormState extends State<LoginForm> {
                           ],
                         ),
                       ),
-                      child: const Center(
-                        child: Text(
-                          'SIGN IN',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
+                      child: Center(
+                        child: _isLoading
+                            ? const SpinKitCircle(
+                                color: Colors.white,
+                                size: 30.0,
+                              )
+                            : const Text(
+                                'SIGN IN',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -168,7 +184,7 @@ class _LoginFormState extends State<LoginForm> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          "Don't have account?",
+                          "Don't have an account?",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,

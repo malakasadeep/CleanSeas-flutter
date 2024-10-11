@@ -1,7 +1,10 @@
 import 'package:clean_seas_flutter/models/user_model.dart';
+import 'package:clean_seas_flutter/screens/education/education_resources_home_screen.dart';
 import 'package:clean_seas_flutter/screens/event/create_event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/event_screen.dart';
 import 'package:clean_seas_flutter/screens/event/one_event_screen.dart';
+import 'package:clean_seas_flutter/screens/report%20pollution/pollution_reports.dart';
+import 'package:clean_seas_flutter/screens/report%20pollution/report_pollution_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +26,9 @@ class _MainScreenUserState extends State<MainScreenUser> {
     // Initialize the screens list inside the build method
     List<Widget> screens = [
       EventScreen(loggedInUser: widget.loggedInUser),
-      OneEventScreen(),
+      AllPollutionReportsPage(loggedInUser: widget.loggedInUser),
       Scaffold(),
-      Scaffold(),
+      EducationResourcesHomeScreen(),
     ];
 
     return Scaffold(
@@ -33,8 +36,12 @@ class _MainScreenUserState extends State<MainScreenUser> {
       extendBody: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CreateEventScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ReportPollutionScreen(
+                        loggedInUser: widget.loggedInUser,
+                      )));
         },
         shape: const CircleBorder(),
         backgroundColor: const Color.fromARGB(255, 45, 44, 44),

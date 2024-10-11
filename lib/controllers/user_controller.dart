@@ -1,3 +1,5 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:clean_seas_flutter/screens/authentication/login_screen.dart';
 import 'package:clean_seas_flutter/screens/main_screen_user.dart';
 import 'package:clean_seas_flutter/screens/ngo_main_screen.dart';
@@ -23,21 +25,31 @@ class UserController {
           .doc(userCredential.user!.uid)
           .set(user.toMap());
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration Successful')),
-      );
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => loginScreen(),
-          // Navigate to login screen
-        ),
-      );
+      // Show success dialog using AwesomeDialog
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.scale,
+        title: 'Registration Successful',
+        desc: 'Your account has been created successfully.',
+        btnOkOnPress: () {
+          // Navigate to the login screen after dialog closes
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const loginScreen()),
+          );
+        },
+      ).show();
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.message}')),
-      );
+      // Show error dialog using AwesomeDialog
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        animType: AnimType.rightSlide,
+        title: 'Error',
+        desc: 'Registration failed: ${e.message}',
+        btnOkOnPress: () {},
+      ).show();
     }
   }
 
@@ -96,21 +108,14 @@ class UserController {
 
   // Method to show error alert dialog
   void _showErrorDialog(BuildContext context, String message) {
-    showDialog(
+    AwesomeDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Login Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+      dialogType: DialogType.error,
+      animType: AnimType.rightSlide,
+      title: 'Login Error',
+      desc: message,
+      btnOkOnPress: () {},
+    ).show();
   }
 
   Future<void> logoutUser(BuildContext context) async {

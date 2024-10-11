@@ -6,7 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class OneEventScreen extends StatefulWidget {
-  const OneEventScreen({super.key});
+  final Event event;
+  const OneEventScreen({super.key, required this.event});
 
   @override
   State<OneEventScreen> createState() => _OneEventScreenState();
@@ -23,7 +24,7 @@ class _OneEventScreenState extends State<OneEventScreen> {
           Stack(
             children: [
               NearEventCard(
-                  event: events[2],
+                  event: widget.event,
                   wid: double.infinity,
                   hig: 420,
                   fsize: 1.4,
