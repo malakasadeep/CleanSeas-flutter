@@ -1,21 +1,7 @@
 import 'package:clean_seas_flutter/screens/seafoodGuide/consumption_details.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const SustainableSeafoodApp());
-}
-
-class SustainableSeafoodApp extends StatelessWidget {
-  const SustainableSeafoodApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const ConsumptionScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 // Sea creature model class
 class SeaCreature {
@@ -122,13 +108,13 @@ final List<SeaCreature> notGoodForConsumptionSeaCreatures = [
 ];
 
 class ConsumptionScreen extends StatefulWidget {
-  const ConsumptionScreen({super.key});
+  const ConsumptionScreen({Key? key}) : super(key: key);
 
   @override
-  _SeafoodGuideScreenState createState() => _SeafoodGuideScreenState();
+  _ConsumptionScreenState createState() => _ConsumptionScreenState();
 }
 
-class _SeafoodGuideScreenState extends State<ConsumptionScreen>
+class _ConsumptionScreenState extends State<ConsumptionScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -147,177 +133,191 @@ class _SeafoodGuideScreenState extends State<ConsumptionScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Make Sustainable Choices'),
-        backgroundColor: Colors.black,
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: TabBar(
-                controller: _tabController,
-                indicator: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.grey,
-                labelStyle: const TextStyle(
-                    fontSize: 14.0, fontWeight: FontWeight.bold),
-                unselectedLabelStyle: const TextStyle(fontSize: 13.0),
-                indicatorPadding: const EdgeInsets.symmetric(vertical: 5),
-                tabs: const [
-                  Tab(text: 'Good for Consumption'),
-                  Tab(text: 'Not Good for Consumption'),
-                ],
+        title: Row(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.pop(context); // Back navigation
+                },
+                backgroundColor: Colors.white,
+                child:
+                    const Icon(Iconsax.arrow_circle_left, color: Colors.black),
               ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: const [
-                GoodForConsumptionScreen(),
-                NotGoodForConsumptionScreen(),
-              ],
-            ),
-          ),
-        ],
+            SizedBox(width: 10),
+            Text('Make Sustainable Choices',
+                    style: TextStyle(color: Colors.white))
+                .animate()
+                .fadeIn(duration: 500.ms)
+                .slideY(begin: -0.2, end: 0),
+          ],
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
       ),
-    );
-  }
-}
-
-// good for consumption screen
-class GoodForConsumptionScreen extends StatefulWidget {
-  const GoodForConsumptionScreen({super.key});
-
-  @override
-  State<GoodForConsumptionScreen> createState() =>
-      _GoodForConsumptionScreenState();
-}
-
-class _GoodForConsumptionScreenState extends State<GoodForConsumptionScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16.0),
-      children: goodForConsumptionSeaCreatures.map((creature) {
-        return SeaCreatureCard2(
-          imageUrl: creature.imageUrl,
-          name: creature.name,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ConsumptionDetails(
-                  creature: creature,
-                ),
-              ),
-            );
-          },
-        );
-      }).toList(),
-    );
-  }
-}
-
-// not good for consumption screen
-class NotGoodForConsumptionScreen extends StatefulWidget {
-  const NotGoodForConsumptionScreen({super.key});
-
-  @override
-  State<NotGoodForConsumptionScreen> createState() =>
-      _NotGoodForConsumptionScreenState();
-}
-
-class _NotGoodForConsumptionScreenState
-    extends State<NotGoodForConsumptionScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16.0),
-      children: notGoodForConsumptionSeaCreatures.map((creature) {
-        return SeaCreatureCard2(
-          imageUrl: creature.imageUrl,
-          name: creature.name,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ConsumptionDetails(
-                  creature: creature,
-                ),
-              ),
-            );
-          },
-        );
-      }).toList(),
-    );
-  }
-}
-
-// SeaCreatureCard widget to display a sea creature
-class SeaCreatureCard2 extends StatefulWidget {
-  final String imageUrl;
-  final String name;
-  final VoidCallback onTap;
-
-  const SeaCreatureCard2({
-    super.key,
-    required this.imageUrl,
-    required this.name,
-    required this.onTap,
-  });
-
-  @override
-  State<SeaCreatureCard2> createState() => _SeaCreatureCardState();
-}
-
-class _SeaCreatureCardState extends State<SeaCreatureCard2> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: InkWell(
-        onTap: widget.onTap,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF0277BD), Color(0xFF01579B)],
           ),
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: Stack(
-            alignment: Alignment.bottomLeft,
+        ),
+        child: SafeArea(
+          child: Column(
             children: [
-              Image.asset(
-                widget.imageUrl,
-                height: 150, // Increased card height
-                width: double.infinity,
-                fit: BoxFit.cover, // Image covers the entire card
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.black54,
-                width: double.infinity,
-                child: Text(
-                  widget.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 16.0, horizontal: 20.0),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(25),
                   ),
+                  child: TabBar(
+                    controller: _tabController,
+                    indicator: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    labelColor: Colors.blue[900],
+                    unselectedLabelColor: Colors.white,
+                    labelStyle: const TextStyle(
+                        fontSize: 14.0, fontWeight: FontWeight.bold),
+                    unselectedLabelStyle: const TextStyle(fontSize: 13.0),
+                    tabs: const [
+                      Tab(text: 'Good for Consumption'),
+                      Tab(text: 'Not Good for Consumption'),
+                    ],
+                  ),
+                ),
+              ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.2, end: 0),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    GoodForConsumptionScreen(),
+                    NotGoodForConsumptionScreen(),
+                  ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class GoodForConsumptionScreen extends StatelessWidget {
+  const GoodForConsumptionScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemCount: goodForConsumptionSeaCreatures.length,
+      itemBuilder: (context, index) {
+        final creature = goodForConsumptionSeaCreatures[index];
+        return SeaCreatureCard(
+          creature: creature,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ConsumptionDetails(creature: creature),
+              ),
+            );
+          },
+        ).animate().fadeIn(duration: 300.ms, delay: (index * 100).ms).slideX();
+      },
+    );
+  }
+}
+
+class NotGoodForConsumptionScreen extends StatelessWidget {
+  const NotGoodForConsumptionScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemCount: notGoodForConsumptionSeaCreatures.length,
+      itemBuilder: (context, index) {
+        final creature = notGoodForConsumptionSeaCreatures[index];
+        return SeaCreatureCard(
+          creature: creature,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ConsumptionDetails(creature: creature),
+              ),
+            );
+          },
+        ).animate().fadeIn(duration: 300.ms, delay: (index * 100).ms).slideX();
+      },
+    );
+  }
+}
+
+class SeaCreatureCard extends StatelessWidget {
+  final SeaCreature creature;
+  final VoidCallback onTap;
+
+  const SeaCreatureCard({
+    Key? key,
+    required this.creature,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 4,
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.asset(
+                creature.imageUrl,
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    creature.name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Icon(
+                    creature.isTrue ? Icons.check_circle : Icons.warning,
+                    color: creature.isTrue ? Colors.green : Colors.red,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

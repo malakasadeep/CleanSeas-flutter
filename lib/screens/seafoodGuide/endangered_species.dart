@@ -1,24 +1,9 @@
+import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:flutter/material.dart';
-// Import the sea_creature_details.dart page
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'endangered_species_details.dart';
 
-void main() {
-  runApp(SustainableSeafoodApp());
-}
-
-class SustainableSeafoodApp extends StatelessWidget {
-  const SustainableSeafoodApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SeafoodGuideScreens(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-// Sea creature model class
 class EndangeredSpecies {
   final String id;
   final String name;
@@ -35,17 +20,7 @@ class EndangeredSpecies {
   });
 }
 
-// Sample list of sea creatures
 final List<EndangeredSpecies> endangeredSpeciess = [
-  EndangeredSpecies(
-    id: '1',
-    name: 'Sei Whale',
-    description:
-        'The Sei Whale is a predatory cephalopod (squid, octopus, or cuttlefish).',
-    longDescription:
-        'The Sei Whale is one of the largest and most fascinating species of cuttlefish, known for its remarkable ability to change color and texture to blend into its surroundings. This cephalopod species, native to the warm waters of the Indo-Pacific region, is a master of camouflage. It can manipulate its skin pigmentation in an instant, not only to hide from predators but also to communicate with other cuttlefish and to stun prey with pulsating patterns of color',
-    imageUrl: 'assets/images/Sei_Whale .png',
-  ),
   EndangeredSpecies(
     id: '2',
     name: 'Hawksbil Turtle',
@@ -70,7 +45,7 @@ final List<EndangeredSpecies> endangeredSpeciess = [
     description:
         'Homarus gammarus, the European or common Squid, which is blue while alive.',
     longDescription:
-        'The Squid, scientifically known as Homarus gammarus, is an extraordinary variant of the European lobster and is famous for its striking cobalt-blue coloration, which is a rare genetic mutation found in about 1 in 2 million lobsters. Typically, lobsters are brownish-green or reddish-brown, camouflaging well with the seabed. However, the blue lobster’s vibrant hue is the result of an overproduction of a particular protein, creating an eye-catching appearance',
+        'The Squid, scientifically known as Homarus gammarus, is an extraordinary variant of the European lobster and is famous for its striking cobalt-blue coloration, which is a rare genetic mutation found in about 1 in 2 million lobsters. Typically, lobsters are brownish-green or reddish-brown, camouflaging well with the seabed. However, the blue lobsters vibrant hue is the result of an overproduction of a particular protein, creating an eye-catching appearance',
     imageUrl: 'assets/images/squid.png',
   ),
   EndangeredSpecies(
@@ -85,121 +60,176 @@ final List<EndangeredSpecies> endangeredSpeciess = [
 ];
 
 class SeafoodGuideScreens extends StatefulWidget {
-  const SeafoodGuideScreens({super.key});
+  const SeafoodGuideScreens({Key? key}) : super(key: key);
 
   @override
   _SeafoodGuideScreensState createState() => _SeafoodGuideScreensState();
 }
 
 class _SeafoodGuideScreensState extends State<SeafoodGuideScreens> {
-  // List to hold favorite sea creatures
   List<String> favorites = [];
-
-  // Controller to track the text in the search field
   TextEditingController searchController = TextEditingController();
-
-  // List to hold the filtered sea creatures
-  List<EndangeredSpecies> filteredEndangeredSpeciess = endangeredSpeciess;
+  List<EndangeredSpecies> filteredEndangeredSpecies = endangeredSpeciess;
 
   @override
   void initState() {
     super.initState();
-    searchController.addListener(
-        _filterEndangeredSpeciess); // Add listener to the search field
+    searchController.addListener(_filterEndangeredSpecies);
   }
 
-  // Function to handle search filtering
-  void _filterEndangeredSpeciess() {
+  void _filterEndangeredSpecies() {
     String query = searchController.text.toLowerCase();
-
     setState(() {
-      filteredEndangeredSpeciess = endangeredSpeciess
-          .where((endangeredSpecies) =>
-              endangeredSpecies.name.toLowerCase().contains(query))
+      filteredEndangeredSpecies = endangeredSpeciess
+          .where((species) => species.name.toLowerCase().contains(query))
           .toList();
     });
   }
 
-  // Function to handle toggling favorites
-  void toggleFavorite(String endangeredSpecies) {
+  void toggleFavorite(String species) {
     setState(() {
-      if (favorites.contains(endangeredSpecies)) {
-        favorites.remove(endangeredSpecies); // Remove from favorites
+      if (favorites.contains(species)) {
+        favorites.remove(species);
       } else {
-        favorites.add(endangeredSpecies); // Add to favorites
+        favorites.add(species);
       }
     });
   }
 
   @override
   void dispose() {
-    searchController.dispose(); // Clean up the controller
+    searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Endangered Sea Creatures'),
-        backgroundColor: const Color.fromARGB(255, 192, 237, 255),
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Search Bar
-            TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                hintText: 'Search for Endangered Sea Creature',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+      backgroundColor: backgroundBlue,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200.0,
+            floating: false,
+            pinned: true,
+            automaticallyImplyLeading: false,
+            backgroundColor: backgroundBlue,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(
+                    'assets/images/seabg.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.7)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              title: Text(
+                'Endangered Sea Creatures',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            // List of Sea Creatures with Vertical Scrolling
-            Expanded(
-              child: filteredEndangeredSpeciess.isNotEmpty
-                  ? ListView(
-                      children:
-                          filteredEndangeredSpeciess.map((endangeredSpecies) {
-                        return EndangeredSpeciesCard(
-                          imageUrl: endangeredSpecies.imageUrl,
-                          name: endangeredSpecies.name,
-                          description: endangeredSpecies.description,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EndangeredSpeciesDetailScreen(
-                                  endangeredSpecies: endangeredSpecies,
-                                ),
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundColor: Colors.white.withOpacity(0.3),
+                child: IconButton(
+                  icon: Icon(Iconsax.arrow_circle_left, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  _buildSearchBar(),
+                  SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: EndangeredSpeciesCard(
+                        imageUrl: filteredEndangeredSpecies[index].imageUrl,
+                        name: filteredEndangeredSpecies[index].name,
+                        description:
+                            filteredEndangeredSpecies[index].description,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EndangeredSpeciesDetailScreen(
+                                endangeredSpecies:
+                                    filteredEndangeredSpecies[index],
                               ),
-                            );
-                          }, // Only navigate on the Seahorse card
-                          isFavorite:
-                              favorites.contains(endangeredSpecies.name),
-                          onFavoriteToggle: () =>
-                              toggleFavorite(endangeredSpecies.name),
-                        );
-                      }).toList(),
-                    )
-                  : Center(
-                      child: Text(
-                        'No sea creatures found.',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
+                            ),
+                          );
+                        },
+                        isFavorite: favorites
+                            .contains(filteredEndangeredSpecies[index].name),
+                        onFavoriteToggle: () => toggleFavorite(
+                            filteredEndangeredSpecies[index].name),
                       ),
                     ),
+                  ),
+                );
+              },
+              childCount: filteredEndangeredSpecies.length,
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: searchController,
+        decoration: InputDecoration(
+          hintText: 'Search for Endangered Sea Creature',
+          prefixIcon: Icon(Icons.search, color: Colors.blue),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         ),
       ),
     );
@@ -210,88 +240,96 @@ class EndangeredSpeciesCard extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String description;
-  final VoidCallback? onTap; // Nullable onTap for conditional navigation
-  final bool isFavorite; // Indicates if the creature is favorited
-  final VoidCallback? onFavoriteToggle; // Handles toggling favorites
+  final VoidCallback? onTap;
+  final bool isFavorite;
+  final VoidCallback? onFavoriteToggle;
 
   const EndangeredSpeciesCard({
-    super.key,
+    Key? key,
     required this.imageUrl,
     required this.name,
     required this.description,
     this.onTap,
-    required this.isFavorite, // Required to handle favorite state
+    required this.isFavorite,
     this.onFavoriteToggle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
-      margin: EdgeInsets.symmetric(vertical: 10),
+      elevation: 5,
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: InkWell(
-        onTap: onTap, // Trigger navigation if onTap is provided
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
+        onTap: onTap,
+        child: Container(
+          height: 130,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image
-              Container(
-                width: 80,
-                height: 100,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(imageUrl),
-                    fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  bottomLeft: Radius.circular(15),
+                ),
+                child: Image.asset(
+                  imageUrl,
+                  width: 130,
+                  height: 130,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[900],
+                        ),
+                      ),
+                      Text(
+                        description,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Read more',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite ? Colors.red : Colors.grey,
+                            ),
+                            onPressed: onFavoriteToggle,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(width: 10),
-              // Text Details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue[900],
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Read more',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Favorite Icon
-              IconButton(
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite ? Colors.red : Colors.grey,
-                ),
-                onPressed: onFavoriteToggle, // Toggle favorite on press
               ),
             ],
           ),

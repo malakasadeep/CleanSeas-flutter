@@ -2,22 +2,6 @@ import 'package:flutter/material.dart';
 // Import the sea_creature_details.dart page
 import 'sea_creature_details.dart';
 
-void main() {
-  runApp(SustainableSeafoodApp());
-}
-
-class SustainableSeafoodApp extends StatelessWidget {
-  const SustainableSeafoodApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SeafoodGuideScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 // Sea creature model class
 class SeaCreature {
   final String id;
