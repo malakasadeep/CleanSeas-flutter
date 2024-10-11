@@ -54,7 +54,7 @@ class _ViewAllArticlesPageState extends State<ViewAllArticlesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundBlue,
+      backgroundColor: Color(0xFF98BCE4),
       body: Column(
         children: [
           Padding(
