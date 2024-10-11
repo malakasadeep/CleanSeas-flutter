@@ -254,7 +254,7 @@ class _NotGoodForConsumptionScreenState
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ConsumptionDetailsCard(
+                builder: (context) => ConsumptionDetails(
                   creature: creature,
                 ),
               ),
