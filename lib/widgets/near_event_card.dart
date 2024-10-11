@@ -33,7 +33,7 @@ class NearEventCard extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child: Image.asset(
+                child: Image.network(
                   event.image,
                   fit: BoxFit.cover,
                 ),
@@ -80,6 +80,7 @@ class NearEventCard extends StatelessWidget {
                       textAlign: TextAlign
                           .left, // Aligns text to the left inside the Text widget
                     ),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),
