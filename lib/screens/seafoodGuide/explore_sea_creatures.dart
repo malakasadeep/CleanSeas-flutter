@@ -1,4 +1,7 @@
+import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 // Import the sea_creature_details.dart page
 import 'sea_creature_details.dart';
 
@@ -68,34 +71,38 @@ final List<SeaCreature> seaCreatures = [
   ),
 ];
 
-class SeafoodGuideScreen extends StatefulWidget {
-  const SeafoodGuideScreen({super.key});
+class SeafoodGuideScreens extends StatefulWidget {
+  const SeafoodGuideScreens({Key? key}) : super(key: key);
 
   @override
-  _SeafoodGuideScreenState createState() => _SeafoodGuideScreenState();
+  _SeafoodGuideScreensState createState() => _SeafoodGuideScreensState();
 }
 
-class _SeafoodGuideScreenState extends State<SeafoodGuideScreen> {
-  // List to hold favorite sea creatures
+class _SeafoodGuideScreensState extends State<SeafoodGuideScreens>
+    with SingleTickerProviderStateMixin {
   List<String> favorites = [];
-
-  // Controller to track the text in the search field
   TextEditingController searchController = TextEditingController();
-
-  // List to hold the filtered sea creatures
   List<SeaCreature> filteredSeaCreatures = seaCreatures;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    searchController
-        .addListener(_filterSeaCreatures); // Add listener to the search field
+    searchController.addListener(_filterSeaCreatures);
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+    _animationController.forward();
   }
 
-  // Function to handle search filtering
   void _filterSeaCreatures() {
     String query = searchController.text.toLowerCase();
-
     setState(() {
       filteredSeaCreatures = seaCreatures
           .where(
@@ -104,83 +111,155 @@ class _SeafoodGuideScreenState extends State<SeafoodGuideScreen> {
     });
   }
 
-  // Function to handle toggling favorites
   void toggleFavorite(String seaCreatureName) {
     setState(() {
       if (favorites.contains(seaCreatureName)) {
-        favorites.remove(seaCreatureName); // Remove from favorites
+        favorites.remove(seaCreatureName);
       } else {
-        favorites.add(seaCreatureName); // Add to favorites
+        favorites.add(seaCreatureName);
       }
     });
   }
 
   @override
   void dispose() {
-    searchController.dispose(); // Clean up the controller
+    searchController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Explore Sea Creatures'),
-        backgroundColor: const Color.fromARGB(255, 192, 237, 255),
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Search Bar
-            TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                hintText: 'Search for Sea Creatures',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Back navigation
+                  },
+                  backgroundColor: Colors.white,
+                  mini: true, // Make the button smaller
+                  child: const Icon(Iconsax.arrow_circle_left,
+                      color: Colors.black),
                 ),
               ),
+              SizedBox(width: 10), // Add some space between the button and text
+              Expanded(
+                // Wrap the text in Expanded to prevent overflow
+                child: Text(
+                  'Sea Creatures',
+                  style: TextStyle(color: Colors.white),
+                  overflow: TextOverflow.ellipsis, // Handle long text
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.favorite, color: Colors.white),
+              onPressed: () {
+                // TODO: Implement favorites screen
+              },
             ),
-            SizedBox(height: 20),
-            // List of Sea Creatures with Vertical Scrolling
-            Expanded(
-              child: filteredSeaCreatures.isNotEmpty
-                  ? ListView(
-                      children: filteredSeaCreatures.map((seaCreature) {
-                        return SeaCreatureCard(
-                          imageUrl: seaCreature.imageUrl,
-                          name: seaCreature.name,
-                          description: seaCreature.description,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SeaCreatureDetailScreen(
-                                  seaCreature: seaCreature,
-                                ),
-                              ),
-                            );
-                          }, // Only navigate on the Seahorse card
-                          isFavorite: favorites.contains(seaCreature.name),
-                          onFavoriteToggle: () =>
-                              toggleFavorite(seaCreature.name),
-                        );
-                      }).toList(),
-                    )
-                  : Center(
-                      child: Text(
-                        'No sea creatures found.',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+          ],
+        ),
+        body: Container(
+          decoration: BoxDecoration(color: backgroundBlue),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  AnimatedBuilder(
+                    animation: _animation,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(0, 50 * (1 - _animation.value)),
+                        child: Opacity(
+                          opacity: _animation.value,
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search for Sea Creatures',
+                        prefixIcon:
+                            Icon(Icons.search, color: Colors.blue.shade900),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.9),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
                         ),
                       ),
                     ),
+                  ),
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: filteredSeaCreatures.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: filteredSeaCreatures.length,
+                            itemBuilder: (context, index) {
+                              final seaCreature = filteredSeaCreatures[index];
+                              return AnimatedBuilder(
+                                animation: _animation,
+                                builder: (context, child) {
+                                  return Transform.translate(
+                                    offset:
+                                        Offset(0, 50 * (1 - _animation.value)),
+                                    child: Opacity(
+                                      opacity: _animation.value,
+                                      child: child,
+                                    ),
+                                  );
+                                },
+                                child: SeaCreatureCard(
+                                  imageUrl: seaCreature.imageUrl,
+                                  name: seaCreature.name,
+                                  description: seaCreature.description,
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SeaCreatureDetailScreen(
+                                                seaCreature: seaCreature),
+                                      ),
+                                    );
+                                  },
+                                  isFavorite:
+                                      favorites.contains(seaCreature.name),
+                                  onFavoriteToggle: () =>
+                                      toggleFavorite(seaCreature.name),
+                                ),
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Text(
+                              'No sea creatures found.',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                            ),
+                          ),
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -191,90 +270,109 @@ class SeaCreatureCard extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String description;
-  final VoidCallback? onTap; // Nullable onTap for conditional navigation
-  final bool isFavorite; // Indicates if the creature is favorited
-  final VoidCallback? onFavoriteToggle; // Handles toggling favorites
+  final VoidCallback? onTap;
+  final bool isFavorite;
+  final VoidCallback? onFavoriteToggle;
 
   const SeaCreatureCard({
-    super.key,
+    Key? key,
     required this.imageUrl,
     required this.name,
     required this.description,
     this.onTap,
-    required this.isFavorite, // Required to handle favorite state
+    required this.isFavorite,
     this.onFavoriteToggle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 5,
       margin: EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: InkWell(
-        onTap: onTap, // Trigger navigation if onTap is provided
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image
-              Container(
-                width: 80,
-                height: 100,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(imageUrl),
-                    fit: BoxFit.cover,
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.white, Colors.blue.shade100],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Hero(
+                  tag: 'seaCreature_${name}',
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: AssetImage(imageUrl),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: 10),
-              // Text Details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue[900],
+                SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue.shade900,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
+                      SizedBox(height: 5),
+                      Text(
+                        description,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Read more',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 14,
+                      SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Read more',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite ? Colors.red : Colors.grey,
+                            ),
+                            onPressed: onFavoriteToggle,
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              // Favorite Icon
-              IconButton(
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite ? Colors.red : Colors.grey,
-                ),
-                onPressed: onFavoriteToggle, // Toggle favorite on press
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

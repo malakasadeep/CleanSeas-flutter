@@ -1,6 +1,6 @@
 import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter/services.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'endangered_species_details.dart';
 
@@ -20,78 +20,92 @@ class EndangeredSpecies {
   });
 }
 
-final List<EndangeredSpecies> endangeredSpeciess = [
+final List<EndangeredSpecies> endangeredSpecies = [
   EndangeredSpecies(
-    id: '2',
-    name: 'Hawksbil Turtle',
+    id: '1',
+    name: 'Hawksbill Turtle',
     description:
-        'This Hawksbil Turtle has a long, scaleless body and a large, distinct dorsal fin.',
+        'This Hawksbill Turtle has a distinct shell pattern and is critically endangered.',
     longDescription:
-        'The Hawksbil Turtle is a small but eye-catching species of blenny that inhabits shallow coral reefs and rocky shorelines throughout the Western Atlantic, from the Caribbean to the Gulf of Mexico. Despite their diminutive size, usually growing no more than 5 centimeters in length, Sailfin Blennies are well-known for their bold and striking dorsal fin, which resembles a sail and can be raised dramatically to attract mates or deter rivals',
+        'The Hawksbill Turtle is a critically endangered sea turtle with a distinctive hawk-like beak. They play a crucial role in maintaining the health of coral reefs and are known for their beautiful shell pattern, which unfortunately has made them a target for the illegal wildlife trade.',
     imageUrl: 'assets/images/turtle.png',
   ),
   EndangeredSpecies(
-    id: '3',
+    id: '2',
     name: 'Orange Roughy',
     description:
-        'The Orange Roughy is scientifically known as Hippocampus kuda.',
+        'The Orange Roughy is a deep-sea fish known for its longevity and slow growth rate.',
     longDescription:
-        'Orange Roughy are small marine fish that are found in shallow tropical and temperate waters around the world. They are known for their horse-like head and their prehensile tail, which they use to anchor themselves to coral or seaweed. Seahorses have a unique appearance and are among the most distinctive fish in the ocean.',
+        'Orange Roughy are deep-sea fish that can live up to 250 years. They are slow-growing and late-maturing, making them particularly vulnerable to overfishing. Their populations have been severely depleted due to commercial fishing practices.',
     imageUrl: 'assets/images/orange_roughy.png',
   ),
   EndangeredSpecies(
-    id: '4',
-    name: 'Hawain Squid',
+    id: '3',
+    name: 'Hawaiian Monk Seal',
     description:
-        'Homarus gammarus, the European or common Squid, which is blue while alive.',
+        'The Hawaiian Monk Seal is one of the most endangered marine mammals in the world.',
     longDescription:
-        'The Squid, scientifically known as Homarus gammarus, is an extraordinary variant of the European lobster and is famous for its striking cobalt-blue coloration, which is a rare genetic mutation found in about 1 in 2 million lobsters. Typically, lobsters are brownish-green or reddish-brown, camouflaging well with the seabed. However, the blue lobsters vibrant hue is the result of an overproduction of a particular protein, creating an eye-catching appearance',
-    imageUrl: 'assets/images/squid.png',
+        'The Hawaiian Monk Seal is endemic to the Hawaiian Islands and is one of the rarest marine mammals in the world. They face numerous threats including habitat loss, entanglement in marine debris, and human disturbance. Conservation efforts are crucial for their survival.',
+    imageUrl: 'assets/images/monk_seal.png',
   ),
   EndangeredSpecies(
-    id: '5',
+    id: '4',
     name: 'Whale Shark',
     description:
-        'The Whale Shark is one of the large number of perciform fishes in the family.',
+        'The Whale Shark is the largest fish in the world and is vulnerable to extinction.',
     longDescription:
-        'The Whale Shark has a robust, elongated body covered in vertical, dark stripes or bars that become more pronounced when the fish is excited or stressed. Its color can range from pale cream to brownish-red, depending on its surroundings and behavior, making it an expert at blending in with coral reefs, rocky outcrops, and seagrass beds. They can grow up to 1.2 meters (4 feet) in length and weigh as much as 25 kilograms (55 pounds)',
+        'Whale Sharks are the gentle giants of the ocean, known for their distinctive spotted pattern and massive size. Despite being the largest fish in the world, they feed mainly on plankton. They are threatened by fishing, boat strikes, and marine pollution.',
     imageUrl: 'assets/images/whale_shark.png',
   ),
 ];
 
-class SeafoodGuideScreens extends StatefulWidget {
-  const SeafoodGuideScreens({Key? key}) : super(key: key);
+class EndangeredSeaCreaturesScreen extends StatefulWidget {
+  const EndangeredSeaCreaturesScreen({Key? key}) : super(key: key);
 
   @override
-  _SeafoodGuideScreensState createState() => _SeafoodGuideScreensState();
+  _EndangeredSeaCreaturesScreenState createState() =>
+      _EndangeredSeaCreaturesScreenState();
 }
 
-class _SeafoodGuideScreensState extends State<SeafoodGuideScreens> {
+class _EndangeredSeaCreaturesScreenState
+    extends State<EndangeredSeaCreaturesScreen>
+    with SingleTickerProviderStateMixin {
   List<String> favorites = [];
   TextEditingController searchController = TextEditingController();
-  List<EndangeredSpecies> filteredEndangeredSpecies = endangeredSpeciess;
+  List<EndangeredSpecies> filteredEndangeredSpecies = endangeredSpecies;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     searchController.addListener(_filterEndangeredSpecies);
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+    _animationController.forward();
   }
 
   void _filterEndangeredSpecies() {
     String query = searchController.text.toLowerCase();
     setState(() {
-      filteredEndangeredSpecies = endangeredSpeciess
+      filteredEndangeredSpecies = endangeredSpecies
           .where((species) => species.name.toLowerCase().contains(query))
           .toList();
     });
   }
 
-  void toggleFavorite(String species) {
+  void toggleFavorite(String speciesId) {
     setState(() {
-      if (favorites.contains(species)) {
-        favorites.remove(species);
+      if (favorites.contains(speciesId)) {
+        favorites.remove(speciesId);
       } else {
-        favorites.add(species);
+        favorites.add(speciesId);
       }
     });
   }
@@ -99,137 +113,142 @@ class _SeafoodGuideScreensState extends State<SeafoodGuideScreens> {
   @override
   void dispose() {
     searchController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backgroundBlue,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 200.0,
-            floating: false,
-            pinned: true,
-            automaticallyImplyLeading: false,
-            backgroundColor: backgroundBlue,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    'assets/images/seabg.jpg',
-                    fit: BoxFit.cover,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.7)
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              title: Text(
-                'Endangered Sea Creatures',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Back navigation
+                  },
+                  backgroundColor: Colors.white,
+                  mini: true, // Make the button smaller
+                  child: const Icon(Iconsax.arrow_circle_left,
+                      color: Colors.black),
                 ),
               ),
-            ),
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                backgroundColor: Colors.white.withOpacity(0.3),
-                child: IconButton(
-                  icon: Icon(Iconsax.arrow_circle_left, color: Colors.white),
-                  onPressed: () => Navigator.pop(context),
+              SizedBox(width: 10), // Add some space between the button and text
+              Expanded(
+                // Wrap the text in Expanded to prevent overflow
+                child: Text(
+                  'Endangered Sea Creatures',
+                  style: TextStyle(color: Colors.white),
+                  overflow: TextOverflow.ellipsis, // Handle long text
                 ),
               ),
-            ),
+            ],
           ),
-          SliverToBoxAdapter(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.favorite, color: Colors.white),
+              onPressed: () {
+                // TODO: Implement favorites screen
+              },
+            ),
+          ],
+        ),
+        body: Container(
+          decoration: BoxDecoration(color: backgroundBlue),
+          child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  _buildSearchBar(),
+                  AnimatedBuilder(
+                    animation: _animation,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(0, 50 * (1 - _animation.value)),
+                        child: Opacity(
+                          opacity: _animation.value,
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search for Endangered Species',
+                        prefixIcon:
+                            Icon(Icons.search, color: Colors.blue.shade900),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.9),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 20),
+                  Expanded(
+                    child: filteredEndangeredSpecies.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: filteredEndangeredSpecies.length,
+                            itemBuilder: (context, index) {
+                              final species = filteredEndangeredSpecies[index];
+                              return AnimatedBuilder(
+                                animation: _animation,
+                                builder: (context, child) {
+                                  return Transform.translate(
+                                    offset:
+                                        Offset(0, 50 * (1 - _animation.value)),
+                                    child: Opacity(
+                                      opacity: _animation.value,
+                                      child: child,
+                                    ),
+                                  );
+                                },
+                                child: EndangeredSpeciesCard(
+                                  imageUrl: species.imageUrl,
+                                  name: species.name,
+                                  description: species.description,
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            EndangeredSpeciesDetailScreen(
+                                          endangeredSpecies: species,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  isFavorite: favorites.contains(species.id),
+                                  onFavoriteToggle: () =>
+                                      toggleFavorite(species.id),
+                                ),
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Text(
+                              'No endangered species found.',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                            ),
+                          ),
+                  ),
                 ],
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 375),
-                  child: SlideAnimation(
-                    verticalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child: EndangeredSpeciesCard(
-                        imageUrl: filteredEndangeredSpecies[index].imageUrl,
-                        name: filteredEndangeredSpecies[index].name,
-                        description:
-                            filteredEndangeredSpecies[index].description,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  EndangeredSpeciesDetailScreen(
-                                endangeredSpecies:
-                                    filteredEndangeredSpecies[index],
-                              ),
-                            ),
-                          );
-                        },
-                        isFavorite: favorites
-                            .contains(filteredEndangeredSpecies[index].name),
-                        onFavoriteToggle: () => toggleFavorite(
-                            filteredEndangeredSpecies[index].name),
-                      ),
-                    ),
-                  ),
-                );
-              },
-              childCount: filteredEndangeredSpecies.length,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
-      ),
-      child: TextField(
-        controller: searchController,
-        decoration: InputDecoration(
-          hintText: 'Search for Endangered Sea Creature',
-          prefixIcon: Icon(Icons.search, color: Colors.blue),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         ),
       ),
     );
@@ -258,44 +277,54 @@ class EndangeredSpeciesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      margin: EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
       child: InkWell(
         onTap: onTap,
         child: Container(
-          height: 130,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.white, Colors.blue.shade100],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Hero(
+                  tag: 'endangeredSpecies_${name}',
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: AssetImage(imageUrl),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 ),
-                child: Image.asset(
-                  imageUrl,
-                  width: 130,
-                  height: 130,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                SizedBox(width: 15),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         name,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue[900],
+                          color: Colors.blue.shade900,
                         ),
                       ),
+                      SizedBox(height: 5),
                       Text(
                         description,
                         style: TextStyle(
@@ -305,6 +334,7 @@ class EndangeredSpeciesCard extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
+                      SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -313,7 +343,7 @@ class EndangeredSpeciesCard extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.blue,
                               fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           IconButton(
@@ -330,8 +360,8 @@ class EndangeredSpeciesCard extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

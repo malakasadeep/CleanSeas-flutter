@@ -1,54 +1,73 @@
-import 'package:clean_seas_flutter/screens/seafoodGuide/seafood_guide_home.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(SeasonalRecommendationScreen());
-}
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class SeasonalRecommendationScreen extends StatelessWidget {
-  const SeasonalRecommendationScreen({super.key});
+  const SeasonalRecommendationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Color(0xFFEAF6FD), // Light blue background
-        appBar: AppBar(
-          backgroundColor: Colors.black87,
-          title: Text(
-            'Seasonal Recommendation',
-            style: TextStyle(color: Colors.grey[300]),
-          ),
-          centerTitle: true,
+    return Theme(
+      data: ThemeData(
+        primaryColor: Colors.blue[700],
+        scaffoldBackgroundColor: Colors.blue[50],
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.blue[700],
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.grey[300]), // Back arrow
-            onPressed: () {
-              //navigation
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SustainableSeafoodGuideHome(),
-                ),
-              );
-            },
-          ),
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SearchBar(),
-                const SizedBox(height: 16),
-                const Legend(),
-                const SizedBox(height: 16),
-                Expanded(child: SeaCreatureGrid()),
-              ],
+        fontFamily: 'Roboto',
+      ),
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text('Seasonal Seafood',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      'assets/images/seabg.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.blue.withOpacity(0.7)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SearchBar(),
+                    SizedBox(height: 16),
+                    Legend(),
+                  ],
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              sliver: SeaCreatureGrid(),
+            ),
+          ],
         ),
       ),
     );
@@ -56,22 +75,22 @@ class SeasonalRecommendationScreen extends StatelessWidget {
 }
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
       ),
       child: TextField(
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search, color: Colors.grey),
+          prefixIcon: Icon(Icons.search, color: Colors.blue[700]),
+          suffixIcon: Icon(Icons.mic, color: Colors.blue[700]),
           hintText: "Search for Sea Creatures",
           border: InputBorder.none,
-          contentPadding: EdgeInsets.all(16),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         ),
       ),
     );
@@ -79,19 +98,29 @@ class SearchBar extends StatelessWidget {
 }
 
 class Legend extends StatelessWidget {
-  const Legend({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        LegendItem(color: Colors.indigo, label: "Abundant & best value"),
-        SizedBox(height: 8), // Add some spacing between items
-        LegendItem(color: Colors.blue, label: "Should be available"),
-        SizedBox(height: 8), // Add some spacing between items
+      children: [
+        Text(
+          'Availability Guide',
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue[700]),
+        ),
+        SizedBox(height: 8),
         LegendItem(
-            color: Color.fromARGB(255, 122, 196, 231), label: "Out of season"),
+            color: Colors.green,
+            label: "Abundant & best value",
+            icon: Icons.thumb_up),
+        LegendItem(
+            color: Colors.orange, label: "Available", icon: Icons.access_time),
+        LegendItem(
+            color: Colors.red,
+            label: "Out of season",
+            icon: Icons.not_interested),
       ],
     );
   }
@@ -100,29 +129,34 @@ class Legend extends StatelessWidget {
 class LegendItem extends StatelessWidget {
   final Color color;
   final String label;
+  final IconData icon;
 
-  const LegendItem({super.key, required this.color, required this.label});
+  const LegendItem(
+      {Key? key, required this.color, required this.label, required this.icon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(width: 16, height: 16, color: color),
-        SizedBox(width: 8),
-        Text(label, style: TextStyle(fontSize: 12)),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 20),
+          SizedBox(width: 8),
+          Text(label, style: TextStyle(fontSize: 14, color: Colors.black87)),
+        ],
+      ),
     );
   }
 }
 
-// Data class for Sea Creatures
 class SeaCreature {
   final String name;
   final String zone;
   final String image;
   final String availability;
-  final List<int> seasonMonths; // List of months when the creature is in season
-  final List<int> activeHours; // List of hours when the creature is active
+  final List<int> seasonMonths;
+  final List<int> activeHours;
 
   SeaCreature({
     required this.name,
@@ -135,12 +169,6 @@ class SeaCreature {
 }
 
 class SeaCreatureGrid extends StatelessWidget {
-  SeaCreatureGrid({super.key});
-
-  // Current date and time
-  final DateTime now = DateTime.now();
-
-  // List of sea creatures
   final List<SeaCreature> creatures = [
     SeaCreature(
       name: "Broadclub Cuttlefish",
@@ -218,34 +246,44 @@ class SeaCreatureGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Filter creatures based on current month and hour
+    final DateTime now = DateTime.now();
     List<SeaCreature> filteredCreatures = creatures.where((creature) {
       return creature.seasonMonths.contains(now.month) &&
           creature.activeHours.contains(now.hour);
     }).toList();
 
-    // Display a message if no creatures are available
     if (filteredCreatures.isEmpty) {
-      return Center(
-        child: Text(
-          "No sea creatures are recommended at this time.",
-          style: TextStyle(fontSize: 16),
-          textAlign: TextAlign.center,
+      return SliverToBoxAdapter(
+        child: Center(
+          child: Text(
+            "No sea creatures are recommended at this time.",
+            style: TextStyle(fontSize: 16, color: Colors.blue[700]),
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     }
 
-    return GridView(
-      padding: EdgeInsets.zero,
+    return SliverAnimatedGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        childAspectRatio: 0.75, // Adjust aspect ratio as needed
+        childAspectRatio: 0.75,
       ),
-      children: filteredCreatures.map((creature) {
-        return SeaCreatureCard(creature: creature);
-      }).toList(),
+      initialItemCount: filteredCreatures.length,
+      itemBuilder: (context, index, animation) {
+        return AnimationConfiguration.staggeredGrid(
+          position: index,
+          duration: const Duration(milliseconds: 375),
+          columnCount: 2,
+          child: ScaleAnimation(
+            child: FadeInAnimation(
+              child: SeaCreatureCard(creature: filteredCreatures[index]),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -253,57 +291,49 @@ class SeaCreatureGrid extends StatelessWidget {
 class SeaCreatureCard extends StatelessWidget {
   final SeaCreature creature;
 
-  const SeaCreatureCard({super.key, required this.creature});
+  const SeaCreatureCard({Key? key, required this.creature}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image of the sea creature
           ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
             child: Image.asset(
               creature.image,
               fit: BoxFit.cover,
-              height: 100,
+              height: 120,
               width: double.infinity,
             ),
           ),
-          // Details of the sea creature
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   creature.name,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 SizedBox(height: 4),
                 Text(
                   "Zone: ${creature.zone}",
-                  style: TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
                 SizedBox(height: 8),
                 Row(
                   children: [
-                    Text("Availability:", style: TextStyle(fontSize: 12)),
-                    Spacer(),
-                    Container(
-                      width: 12,
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: _getColor(creature.availability),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
+                    Icon(_getAvailabilityIcon(creature.availability),
+                        color: _getColor(creature.availability), size: 20),
+                    SizedBox(width: 4),
+                    Text(_getAvailabilityText(creature.availability),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: _getColor(creature.availability))),
                   ],
                 ),
               ],
@@ -317,13 +347,39 @@ class SeaCreatureCard extends StatelessWidget {
   Color _getColor(String availability) {
     switch (availability) {
       case 'indigo':
-        return Colors.indigo;
+        return Colors.green;
       case 'blue':
-        return Colors.blue;
+        return Colors.orange;
       case 'lightBlue':
-        return const Color.fromARGB(255, 142, 212, 244);
+        return Colors.red;
       default:
         return Colors.grey;
+    }
+  }
+
+  IconData _getAvailabilityIcon(String availability) {
+    switch (availability) {
+      case 'indigo':
+        return Icons.thumb_up;
+      case 'blue':
+        return Icons.access_time;
+      case 'lightBlue':
+        return Icons.not_interested;
+      default:
+        return Icons.help_outline;
+    }
+  }
+
+  String _getAvailabilityText(String availability) {
+    switch (availability) {
+      case 'indigo':
+        return 'Best Choice';
+      case 'blue':
+        return 'Available';
+      case 'lightBlue':
+        return 'Out of Season';
+      default:
+        return 'Unknown';
     }
   }
 }
