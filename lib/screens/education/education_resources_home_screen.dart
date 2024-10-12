@@ -19,7 +19,7 @@ class EducationResourcesHomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 30),
+            SizedBox(height: 60),
             Text(
               'Education Resources',
               style: GoogleFonts.raleway(
