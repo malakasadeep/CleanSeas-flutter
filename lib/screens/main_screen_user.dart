@@ -82,7 +82,7 @@ class _MainScreenUserState extends State<MainScreenUser> {
               children: [
                 IconButton(
                   icon: const Icon(
-                    Iconsax.menu_board,
+                    Iconsax.note_favorite,
                     color: Color.fromARGB(255, 177, 177, 177),
                   ),
                   onPressed: () => setState(() {
@@ -98,7 +98,7 @@ class _MainScreenUserState extends State<MainScreenUser> {
               children: [
                 IconButton(
                   icon: const Icon(
-                    Icons.library_books,
+                    Icons.food_bank,
                     color: Color.fromARGB(255, 177, 177, 177),
                   ),
                   onPressed: () => setState(() {
@@ -113,7 +113,7 @@ class _MainScreenUserState extends State<MainScreenUser> {
               children: [
                 IconButton(
                   icon: const Icon(
-                    Iconsax.flash_circle,
+                    Iconsax.book,
                     color: Color.fromARGB(255, 177, 177, 177),
                   ),
                   onPressed: () => setState(() {
