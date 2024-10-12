@@ -1,5 +1,6 @@
 import 'package:clean_seas_flutter/constants/colours.dart';
 import 'package:clean_seas_flutter/screens/seafoodGuide/endangered_species.dart';
+import 'package:clean_seas_flutter/screens/seafoodGuide/explore_sea_creatures.dart';
 import 'package:clean_seas_flutter/screens/seafoodGuide/good_for_consumption.dart';
 import 'package:clean_seas_flutter/screens/seafoodGuide/seasonal_reccomendation.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,8 @@ class SustainableSeafoodGuideHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SeafoodGuideScreens(),
+                            builder: (context) =>
+                                const EndangeredSeaCreaturesScreen(),
                           ),
                         );
                       }),
