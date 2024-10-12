@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class HomeSearchBar extends StatelessWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
   const HomeSearchBar({
     super.key,
+    required this.controller, // Pass the controller here
+    required this.onChanged, // Pass the callback here
   });
 
   @override
@@ -19,21 +24,23 @@ class HomeSearchBar extends StatelessWidget {
         horizontal: 20,
         vertical: 5,
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Iconsax.search_normal),
-          SizedBox(width: 10),
+          const Icon(Iconsax.search_normal),
+          const SizedBox(width: 10),
           Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              controller: controller, // Attach the controller here
+              onChanged: onChanged, // Trigger the callback on text change
+              decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: "Search adress or near you",
+                hintText: "Search address or near you",
                 hintStyle: TextStyle(
                   color: Colors.grey,
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
