@@ -48,6 +48,10 @@ class _EventScreenState extends State<EventScreen> {
                     }
 
                     final events = snapshot.data!;
+                    final sriLankaEvents = events
+                        .where((event) => _isInSriLanka(
+                            event.location.latitude, event.location.longitude))
+                        .toList();
 
                     return SingleChildScrollView(
                       child: Column(
@@ -84,17 +88,18 @@ class _EventScreenState extends State<EventScreen> {
                             height: 250,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: events.length,
+                              itemCount: sriLankaEvents.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 20.0),
                                   child: NearEventCard(
-                                    event: events[index],
+                                    event: sriLankaEvents[index],
                                     wid: 200,
                                     hig: 250,
                                     fsize: 1,
                                     onTap: () => _onNearEventCardTapped(
-                                        events[index]), // Pass the event here
+                                        sriLankaEvents[
+                                            index]), // Pass the event here
                                   ),
                                 );
                               },
@@ -131,8 +136,12 @@ class _EventScreenState extends State<EventScreen> {
                               events.length,
                               (index) => Padding(
                                 padding: const EdgeInsets.only(bottom: 20.0),
-                                child:
-                                    FeaturedEvent(), // You can customize this to show event data
+                                child: FeaturedEvent(
+                                    event: events[index],
+                                    onTap: () =>
+                                        _onNearEventCardTapped(events[index])),
+
+                                // You can customize this to show event data
                               ),
                             ),
                           ),
@@ -147,6 +156,12 @@ class _EventScreenState extends State<EventScreen> {
         ),
       ),
     );
+  }
+
+  bool _isInSriLanka(double latitude, double longitude) {
+    // Sri Lanka's approximate geographical boundaries
+    return (latitude >= 5.8 && latitude <= 9.8) &&
+        (longitude >= 70 && longitude <= 81.6);
   }
 
   void _onNearEventCardTapped(Event event) {
