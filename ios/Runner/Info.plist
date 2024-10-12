@@ -6,6 +6,10 @@
     <string>This app requires access to your photo library to allow you to upload images for events.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your description here</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    <string>mailto</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

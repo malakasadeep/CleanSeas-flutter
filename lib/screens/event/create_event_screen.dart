@@ -341,7 +341,7 @@ class LocationPickerScreen extends StatefulWidget {
 
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
   GoogleMapController? _controller;
-  LatLng _pickedLocation = const LatLng(37.7749, -122.4194); // Default to SF
+  LatLng _pickedLocation = const LatLng(6.9271, 79.9614); // Default to SF
   Location location = Location();
 
   @override
