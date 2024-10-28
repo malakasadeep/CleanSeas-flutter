@@ -27,8 +27,8 @@
 
 ## 🎥 App Preview
 
-![App Preview Animation](https://example.com/your-animation-link)  
-*(Replace with your app’s actual animation or a GIF showcasing the UI)*
+![App Preview Animation](https://github.com/malakasadeep/my_asserts/blob/main/1%20(1).gif?raw=true)  
+
 
 ---
 
@@ -46,9 +46,58 @@
 ### Prerequisites
 
 Ensure you have Flutter and Firebase CLI installed:
-```bash
-# Flutter installation
-https://flutter.dev/docs/get-started/install
+  ```bash
+  # Flutter installation
+  https://flutter.dev/docs/get-started/install
+  
+  # Firebase CLI
+  https://firebase.google.com/docs/cli
+  ```
 
-# Firebase CLI
-https://firebase.google.com/docs/cli
+### Project Setup
+1. Clone the repo:
+   
+   ```bash
+   git clone https://github.com/malakasadeep/CleanSeas-flutter.git
+   cd CleanSeas
+   ```
+2. Install dependencies:
+   
+   ```bash
+   flutter pub get
+   ```
+3. Configure Firebase:
+   
+   ```bash
+   - Create a Firebase project.
+   - Enable Firebase Authentication, Firestore, and Storage.
+   - Download the google-services.json file and place it in the android/app directory.
+   - Update Firebase settings in firebase_options.dart.
+   ```
+4. Run the app:
+   
+   ```bash
+   flutter run
+   ```
+
+---
+
+### 🌐 App Configuration
+
+## To fully enable all features:
+
+- **Google Maps API**: Obtain an API key here.
+- **Firebase Authentication**: Enable Email/Password or Google login under Firebase Authentication settings.
+- **Firestore Rules**: Secure Firestore access using Firebase security rules.
+
+---
+
+
+### 🎨 UI & UX Enhancements
+##
+
+- **Animated UI Elements**: Smooth transitions and responsive design, enhancing the user experience.
+- **Lottie Animations**: Animated icons for a lively, engaging interface.
+- **Custom Illustrations**: Unique visuals promoting environmental awareness.
+
+- ---
